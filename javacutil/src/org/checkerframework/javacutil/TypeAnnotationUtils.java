@@ -76,7 +76,7 @@ public class TypeAnnotationUtils {
     public static boolean isTypeCompoundContainedByName(Types types, List<TypeCompound> list, TypeCompound tc) {
         for (Attribute.TypeCompound rawat : list) {
             if (contentEquals(rawat.type.tsym.name, tc.type.tsym.name) &&
-                isSameTAPositionExceptTreePosAndLocation(rawat.position, tc.position)) {
+                isSameTAPositionExceptTreePos(rawat.position, tc.position)) {
                 return true;
             }
         }
