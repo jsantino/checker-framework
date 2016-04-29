@@ -1,27 +1,41 @@
 import org.checkerframework.checker.nonneg.*;
 import org.checkerframework.checker.nonneg.qual.*;
 
-//@Trivial.qual.DefaultQualifier(Unknown.class)
-
-
 /*
  * These test cases test to make sure that the qualifier hierarchy is
  * correctly enforced using inline annotations.
  */
 public class QualifierHierarchy {
 
-    void testImplicitDecloration() {
-    	@NonNegative int a = 1;
-    	@NonNegative int b = 2;
+    void testUserWrittenDeclaration() {
+    	@NonNegative int a = 0;
+    	@NonNegative int b = 1;
+    	
     	@Unknown int c = -1;
     	@Unknown int d = 3;
     	
-        //:: error: (assignment.type.incompatible)
+        //:: warning: (assignment.type.incompatible)
     	@NonNegative int e = -1;
     }
+    
+    void testUserWrittenAssignment() {
+    	@NonNegative int a = 1;
+    	@NonNegative int b = a;
+    	
+    	@Unknown int c = -1;
+    	@Unknown int d = c;
+    	@Unknown int e = a;
+    	
+    	//:: warning: (assignment.type.incompatible)
+    	@NonNegative int f = c;
+    }
+    
+    void testUserWritten () {
+    	
+    }
 
-    public void test() {
-        test(NonNull.class);
+    void testImplicitAnnotations() {
+    	@NonNegative int a = 1;
 
         @NonNegative int n1 = 1;
         test(n1);
