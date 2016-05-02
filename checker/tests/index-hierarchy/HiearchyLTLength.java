@@ -3,7 +3,7 @@ class HierarchyLTLength {
 	int arr = new int[5];
 	int arrB = new int[5];
 	
-	@LTLength("arr") int i;
+	@LTLengthq("arr") int i;
 	
 	void assignIndexFor(@IndexFor("arr") int v) { 
 		i = v;
