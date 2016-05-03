@@ -124,35 +124,24 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 		@Override
 		public boolean isSubtype(AnnotationMirror rhs, AnnotationMirror lhs) {
 			// Ignore annotation values to ensure that annotation is in supertype map.
-			
-			// do lhs first
-			if (AnnotationUtils.areSameIgnoringValues(lhs, LTLength)) {
-				lhs = LTLength;
+			return super.isSubtype(refine(rhs), refine(lhs));
+		}
+		
+		// get the type annotation without the value
+		private AnnotationMirror refine(AnnotationMirror type){
+			if (AnnotationUtils.areSameIgnoringValues(type, LTLength)) {
+				return LTLength;
 			}
-			else if (AnnotationUtils.areSameIgnoringValues(lhs, IndexFor)) {
-				lhs = IndexFor;
+			else if (AnnotationUtils.areSameIgnoringValues(type, IndexFor)) {
+				return IndexFor;
 			}
-			else if (AnnotationUtils.areSameIgnoringValues(lhs, IndexOrHigh)) {
-				lhs = IndexOrHigh;
+			else if (AnnotationUtils.areSameIgnoringValues(type, IndexOrHigh)) {
+				return IndexOrHigh;
 			}
-			else if (AnnotationUtils.areSameIgnoringValues(lhs, IndexOrLow)) {
-				lhs = IndexOrLow;
+			else if (AnnotationUtils.areSameIgnoringValues(type, IndexOrLow)) {
+				return IndexOrLow;
 			}
-			
-			// do rhs
-			if (AnnotationUtils.areSameIgnoringValues(rhs, IndexFor)) {
-				rhs = IndexFor;
-			}
-			else if (AnnotationUtils.areSameIgnoringValues(rhs, IndexOrLow)) {
-				rhs = IndexOrLow;
-			}
-			else if (AnnotationUtils.areSameIgnoringValues(rhs, IndexOrHigh)) {
-				rhs = IndexOrHigh;
-			}
-			else if (AnnotationUtils.areSameIgnoringValues(rhs, LTLength)) {
-				rhs = LTLength;
-			}
-			return super.isSubtype(rhs, lhs);
+			return type;
 		}
 	}
 	
