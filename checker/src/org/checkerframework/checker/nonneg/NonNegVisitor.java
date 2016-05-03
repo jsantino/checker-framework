@@ -9,7 +9,7 @@ import org.checkerframework.framework.type.AnnotatedTypeMirror;
 import com.sun.source.tree.ArrayAccessTree;
 import com.sun.source.tree.ExpressionTree;
 
-
+import org.checkerframework.checker.nonneg.qual.*;
 
 public class NonNegVisitor extends BaseTypeVisitor<NonNegAnnotatedTypeFactory> {
 	public NonNegVisitor(BaseTypeChecker checker) {
@@ -21,7 +21,7 @@ public class NonNegVisitor extends BaseTypeVisitor<NonNegAnnotatedTypeFactory> {
 	public Void visitArrayAccess(ArrayAccessTree tree, Void type) {
 		ExpressionTree index = tree.getIndex();
 		AnnotatedTypeMirror indexType = atypeFactory.getAnnotatedType(index);
-		if (!indexType.hasAnnotation(Trivial.qual.NonNegative.class)) {
+		if (!indexType.hasAnnotation(NonNegative.class)) {
 			checker.report(Result.warning("Potentially unsafe array access: only use NonNegative index"), index);
 		}
 		return super.visitArrayAccess(tree, type);

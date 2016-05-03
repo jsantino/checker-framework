@@ -22,8 +22,7 @@ import org.checkerframework.javacutil.Pair;
 import com.sun.source.tree.LiteralTree;
 import com.sun.source.tree.Tree;
 
-import Trivial.qual.NonNegative;
-import Trivial.qual.Unknown;
+import org.checkerframework.checker.nonneg.qual.*;
 
 // The current functionality of this class is to create @NonNegative instances if the annotation is manually used by the programmer, and to assign @NonNegative to strictly positive Literals (i.e. constants in expressions)
 
