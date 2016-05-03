@@ -1,5 +1,7 @@
 This is the checker-framework repository.
 
+For information on the indexchecker, please see README-IndexChecker.txt located in this same directory.
+
 If you wish to use the Checker Framework, see file README.txt.
 
 This repository contains several related projects:
