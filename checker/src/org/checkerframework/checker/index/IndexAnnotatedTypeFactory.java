@@ -25,6 +25,7 @@ import org.checkerframework.framework.util.MultiGraphQualifierHierarchy.MultiGra
 import org.checkerframework.javacutil.AnnotationUtils;
 import org.checkerframework.javacutil.Pair;
 
+import com.sun.source.tree.BinaryTree;
 import com.sun.source.tree.LiteralTree;
 import com.sun.source.tree.MemberReferenceTree;
 import com.sun.source.tree.MemberSelectTree;
@@ -85,6 +86,37 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 			}
 			return super.visitLiteral(tree, type);
 		}
+	//*****************************************************************//
+	// these are the method that handle Binary operations (+- etc.)    //
+	//*****************************************************************//
+		public Void visitBinary(BinaryTree tree, AnnotatedTypeMirror type){
+			switch (tree.getKind()){
+			case PLUS:
+				visitPlus(tree, type);
+				break;
+			case MINUS:
+				visitMinus(tree, type);
+				break;
+			default:
+				break;
+			}
+			return super.visitBinary(tree, type);
+		}
+		
+		public void visitPlus(BinaryTree tree, AnnotatedTypeMirror type){
+			
+		}
+		
+		public void visitMinus(BinaryTree tree, AnnotatedTypeMirror type){
+			
+		}
+		
+		
+		
+		
+		
+		
+		
 		
 		// didn't work for intro a.length, doing it in transfer
 /*		public Void visitMemberSelect(MemberSelectTree tree, AnnotatedTypeMirror type){
