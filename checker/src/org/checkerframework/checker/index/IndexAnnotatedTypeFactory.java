@@ -103,11 +103,13 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 	public QualifierHierarchy createQualifierHierarchy(MultiGraphFactory factory) {
 		return new IndexQualifierHierarchy(factory, IndexBottom);
 	}
-	
+
+	//********************************************************************************//
+	// This is the class that handles the subtyping for our qualifiers                //
+	//********************************************************************************//	
 	private final class IndexQualifierHierarchy extends GraphQualifierHierarchy {
 
-		public IndexQualifierHierarchy(MultiGraphFactory f,
-				AnnotationMirror bottom) {
+		public IndexQualifierHierarchy(MultiGraphFactory f, AnnotationMirror bottom) {
 			super(f, bottom);
 		}
 
