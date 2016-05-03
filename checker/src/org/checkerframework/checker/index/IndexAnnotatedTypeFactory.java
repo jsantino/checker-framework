@@ -26,6 +26,8 @@ import org.checkerframework.javacutil.AnnotationUtils;
 import org.checkerframework.javacutil.Pair;
 
 import com.sun.source.tree.LiteralTree;
+import com.sun.source.tree.MemberReferenceTree;
+import com.sun.source.tree.MemberSelectTree;
 import com.sun.source.tree.Tree;
 
 public class IndexAnnotatedTypeFactory
@@ -34,13 +36,14 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 	protected final AnnotationMirror IndexFor;
 	protected final AnnotationMirror IndexBottom;
 	protected final AnnotationMirror IndexOrLow;
-
+	protected final AnnotationMirror IndexOrHigh;
 
 	public IndexAnnotatedTypeFactory(BaseTypeChecker checker) {
 		super(checker);
 		IndexFor = AnnotationUtils.fromClass(elements, IndexFor.class);
 		IndexBottom = AnnotationUtils.fromClass(elements, IndexBottom.class);
 		IndexOrLow = AnnotationUtils.fromClass(elements, IndexOrLow.class);
+		IndexOrHigh = AnnotationUtils.fromClass(elements, IndexOrHigh.class);
 		this.postInit();
 	}
 
@@ -76,6 +79,17 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 			}
 			return super.visitLiteral(tree, type);
 		}
+		
+		// didn't work for intro a.length, doing it in transfer
+/*		public Void visitMemberSelect(MemberSelectTree tree, AnnotatedTypeMirror type){
+			String name = tree.getExpression().toString();
+			String iden = tree.getIdentifier().toString();
+			if(iden.equals("length")){
+				System.out.println(tree.toString());
+				type.addAnnotation(createIndexOrHighAnnotation(name));
+			}
+			return super.visitMemberSelect(tree, type);
+		}*/
 
 		
 		
@@ -89,6 +103,7 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 	public QualifierHierarchy createQualifierHierarchy(MultiGraphFactory factory) {
 		return new IndexQualifierHierarchy(factory, IndexBottom);
 	}
+	
 	private final class IndexQualifierHierarchy extends GraphQualifierHierarchy {
 
 		public IndexQualifierHierarchy(MultiGraphFactory f,
@@ -113,6 +128,12 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 			if (AnnotationUtils.areSameIgnoringValues(rhs, IndexOrLow)) {
 				rhs = IndexOrLow;
 			}
+			if (AnnotationUtils.areSameIgnoringValues(lhs, IndexOrHigh)) {
+				lhs = IndexOrHigh;
+			}
+			if (AnnotationUtils.areSameIgnoringValues(rhs, IndexOrHigh)) {
+				rhs = IndexOrHigh;
+			}
 			return super.isSubtype(rhs, lhs);
 		}
 	}
@@ -133,8 +154,15 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 	}
 	
 	//returns a new @IndexOrLow annotation
-	private AnnotationMirror createIndexorLowAnnotation(String name) {
+	AnnotationMirror createIndexorLowAnnotation(String name) {
 		AnnotationBuilder builder = new AnnotationBuilder(processingEnv, IndexOrLow.class);
+		builder.setValue("value", name);
+		return builder.build();
+	}
+	
+	//returns a new @IndexOrHigh annotation
+	AnnotationMirror createIndexOrHighAnnotation(String name) {
+		AnnotationBuilder builder = new AnnotationBuilder(processingEnv, IndexOrHigh.class);
 		builder.setValue("value", name);
 		return builder.build();
 	}
