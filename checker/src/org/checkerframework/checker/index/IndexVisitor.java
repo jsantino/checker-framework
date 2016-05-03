@@ -25,7 +25,7 @@ public class IndexVisitor extends BaseTypeVisitor<IndexAnnotatedTypeFactory> {
 	public IndexVisitor(BaseTypeChecker checker) {
 		super(checker);
 		ProcessingEnvironment env = checker.getProcessingEnvironment();
-		IndexValueElement = TreeUtils.getMethod("Index.qual.IndexFor", "value", 0, env);
+		IndexValueElement = TreeUtils.getMethod("org.checkerframework.checker.index.qual.IndexFor", "value", 0, env);
 	}
 	
 	@Override
