@@ -1,3 +1,7 @@
+import org.checkerframework.checker.index.qual.*;
+
+import org.checkerframework.checker.index.qual.*;
+
 class HierarchyIndexOrHigh {
 	
 	int arr = new int[5];
