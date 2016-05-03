@@ -686,6 +686,16 @@
         </antcall>
     </target>
 
+	
+    <!-- Custom checker. -->
+    <target name="nonneg-tests" depends="jar,build-tests"
+            description="Run tests for the NonNeg Checker">
+        <antcall target="-run-tests">
+            <param name="param" value="tests.NonNegTest"/>
+        </antcall>
+    </target>
+	
+	
     <target name="nullness-tests"
             depends="jdk.jar,nullness-tests-nobuildjdk"
             description="Run tests for the Nullness Checker">
