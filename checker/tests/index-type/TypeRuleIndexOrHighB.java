@@ -1,3 +1,5 @@
+import org.checkerframework.checker.index.qual.*;
+
 class TypeRuleIndexOrHighB {
   
 	int arr = new int[5];
