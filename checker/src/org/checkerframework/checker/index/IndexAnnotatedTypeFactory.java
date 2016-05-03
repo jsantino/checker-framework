@@ -37,6 +37,7 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 	protected final AnnotationMirror IndexBottom;
 	protected final AnnotationMirror IndexOrLow;
 	protected final AnnotationMirror IndexOrHigh;
+	protected final AnnotationMirror LTLength;
 
 	public IndexAnnotatedTypeFactory(BaseTypeChecker checker) {
 		super(checker);
@@ -44,6 +45,7 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 		IndexBottom = AnnotationUtils.fromClass(elements, IndexBottom.class);
 		IndexOrLow = AnnotationUtils.fromClass(elements, IndexOrLow.class);
 		IndexOrHigh = AnnotationUtils.fromClass(elements, IndexOrHigh.class);
+		LTLength = AnnotationUtils.fromClass(elements, LTLength.class);
 		this.postInit();
 	}
 
@@ -140,6 +142,12 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 			if (AnnotationUtils.areSameIgnoringValues(rhs, IndexOrHigh)) {
 				rhs = IndexOrHigh;
 			}
+			if (AnnotationUtils.areSameIgnoringValues(lhs, LTLength)) {
+				lhs = LTLength;
+			}
+			if (AnnotationUtils.areSameIgnoringValues(rhs, LTLength)) {
+				rhs = LTLength;
+			}
 			return super.isSubtype(rhs, lhs);
 		}
 	}
@@ -169,6 +177,20 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 	//returns a new @IndexOrHigh annotation
 	AnnotationMirror createIndexOrHighAnnotation(String name) {
 		AnnotationBuilder builder = new AnnotationBuilder(processingEnv, IndexOrHigh.class);
+		builder.setValue("value", name);
+		return builder.build();
+	}
+	
+	//returns a new @LTLength annotation
+	AnnotationMirror createLTLengthAnnotation(String name) {
+		AnnotationBuilder builder = new AnnotationBuilder(processingEnv, LTLength.class);
+		builder.setValue("value", name);
+		return builder.build();
+	}
+	
+	//returns a new @IndexFor annotation
+	AnnotationMirror createIndexForAnnotation(String name) {
+		AnnotationBuilder builder = new AnnotationBuilder(processingEnv, IndexFor.class);
 		builder.setValue("value", name);
 		return builder.build();
 	}
