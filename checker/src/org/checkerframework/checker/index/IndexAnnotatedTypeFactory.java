@@ -69,13 +69,14 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 		public Void visitLiteral(LiteralTree tree, AnnotatedTypeMirror type){
 			if (!type.isAnnotatedInHierarchy(AnnotationUtils.fromClass(elements, NonNegative.class))) {
 				if (tree.getKind() == Tree.Kind.INT_LITERAL) {
-					if ((int)tree.getValue() > 0) {
+					int val = (int) tree.getValue();
+					if (val > 0) {
 						type.addAnnotation(createNonNegAnnotation());
 					}
-					if((int)tree.getValue() == -1){
+					else if(val == -1){
 						type.addAnnotation(createIndexOrLowAnnotation(""));
 					}
-					if((int)tree.getValue() == 0){
+					else if(val == 0){
 						type.addAnnotation(createIndexOrHighAnnotation(""));
 					}
 				}
