@@ -1,3 +1,5 @@
+import org.checkerframework.checker.index.qual.*;
+
 class IntroRuleIndexOrHigh.java {
 	
 	int[] arr = new int[5];

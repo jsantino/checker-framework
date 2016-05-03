@@ -1,3 +1,5 @@
+import org.checkerframework.checker.index.qual.*;
+
 class IntroRuleNonNegative.java {
 	
 	void foo() {
