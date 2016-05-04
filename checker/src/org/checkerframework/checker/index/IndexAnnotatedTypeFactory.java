@@ -64,6 +64,11 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 		this.postInit();
 	}
 
+	// uses the qualhierarchy to share subtype information
+	public boolean isSubtype(AnnotationMirror rhs, AnnotationMirror lhs) {
+		return qualHierarchy.isSubtype((rhs), (lhs));
+	}
+	
 	@Override
 	public TreeAnnotator createTreeAnnotator() {
 		return new ListTreeAnnotator(
@@ -73,6 +78,7 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 				);
 	}
 
+	
 	@Override
 	protected IndexAnalysis createFlowAnalysis(List<Pair<VariableElement, CFValue>> fieldvalues){
 		return new IndexAnalysis(checker, this, fieldvalues);
