@@ -44,6 +44,7 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 	protected final AnnotationMirror IndexOrLow;
 	protected final AnnotationMirror IndexOrHigh;
 	protected final AnnotationMirror LTLength;
+	protected final AnnotationMirror NonNegative;
 	
 	// methods to get values
 	protected final ExecutableElement IndexForValueElement;
@@ -56,6 +57,7 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 		IndexOrLow = AnnotationUtils.fromClass(elements, IndexOrLow.class);
 		IndexOrHigh = AnnotationUtils.fromClass(elements, IndexOrHigh.class);
 		LTLength = AnnotationUtils.fromClass(elements, LTLength.class);
+		NonNegative = AnnotationUtils.fromClass(elements, NonNegative.class);
 		
 		env = checker.getProcessingEnvironment();
 		IndexForValueElement = TreeUtils.getMethod("org.checkerframework.checker.index.qual.IndexFor", "value", 0, env);
@@ -131,14 +133,16 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 					// for every annotation the left has change each indexFor into IndexOrHigh
 					for(AnnotationMirror anno: left.getAnnotations()){
 						if(qualHierarchy.isSubtype(anno, IndexOrLow)){
-							left.removeAnnotation(anno);
+							type.removeAnnotation(anno);
 							String value = IndexVisitor.getIndexValue(anno, getValueMethod(anno));
 							type.addAnnotation(createIndexOrHighAnnotation(value));						
 						}
 					}
 				}
-				
 			}
+//			if(right.hasAnnotation(NonNegative)){
+//				for(AnnotationMirror anno: )
+//			}
 		}
 		// returns the value method specific to the class of the anno passed in
 		private ExecutableElement getValueMethod(AnnotationMirror anno) {
