@@ -29,6 +29,7 @@ import org.checkerframework.javacutil.Pair;
 import org.checkerframework.javacutil.TreeUtils;
 
 import com.sun.source.tree.BinaryTree;
+import com.sun.source.tree.ExpressionTree;
 import com.sun.source.tree.LiteralTree;
 import com.sun.source.tree.MemberReferenceTree;
 import com.sun.source.tree.MemberSelectTree;
@@ -102,8 +103,12 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 	//*****************************************************************//
 		public Void visitBinary(BinaryTree tree, AnnotatedTypeMirror type){
 			switch (tree.getKind()){
+			// call both directions for commutativity
 			case PLUS:
-				visitPlus(tree, type);
+				ExpressionTree left = tree.getLeftOperand();
+				ExpressionTree right = tree.getRightOperand();
+				visitPlus(left, right, type);
+				visitPlus(right, left, type);
 				break;
 			case MINUS:
 				visitMinus(tree, type);
@@ -115,13 +120,13 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 		}
 		
 		// do addition between types
-		public void visitPlus(BinaryTree tree, AnnotatedTypeMirror type){
-			AnnotatedTypeMirror left = getAnnotatedType(tree.getLeftOperand());
-			AnnotatedTypeMirror right = getAnnotatedType(tree.getRightOperand());
+		public void visitPlus(ExpressionTree leftExpr, ExpressionTree rightExpr, AnnotatedTypeMirror type){
+			AnnotatedTypeMirror left = getAnnotatedType(leftExpr);
+			AnnotatedTypeMirror right = getAnnotatedType(rightExpr);
 			
 			// if the right side is a literal we do some special stuff(specifically for 1)
-			if(tree.getRightOperand().getKind() == Tree.Kind.INT_LITERAL){
-				int val = (int) ((LiteralTree)tree.getRightOperand()).getValue();
+			if(rightExpr.getKind() == Tree.Kind.INT_LITERAL){
+				int val = (int) ((LiteralTree)rightExpr).getValue();
 				if(val == 1){
 					// for every annotation the left has change each indexFor into IndexOrHigh
 					for(AnnotationMirror anno: left.getAnnotations()){
@@ -135,7 +140,7 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 				
 			}
 		}
-		
+		// returns the value method specific to the class of the anno passed in
 		private ExecutableElement getValueMethod(AnnotationMirror anno) {
 			if(AnnotationUtils.areSameIgnoringValues(anno, IndexFor)){
 				return TreeUtils.getMethod("org.checkerframework.checker.index.qual.IndexFor", "value", 0, env);
