@@ -4,7 +4,9 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 
 import org.checkerframework.checker.index.qual.*;
@@ -24,6 +26,7 @@ import org.checkerframework.framework.util.GraphQualifierHierarchy;
 import org.checkerframework.framework.util.MultiGraphQualifierHierarchy.MultiGraphFactory;
 import org.checkerframework.javacutil.AnnotationUtils;
 import org.checkerframework.javacutil.Pair;
+import org.checkerframework.javacutil.TreeUtils;
 
 import com.sun.source.tree.BinaryTree;
 import com.sun.source.tree.LiteralTree;
@@ -33,12 +36,17 @@ import com.sun.source.tree.Tree;
 
 public class IndexAnnotatedTypeFactory
 extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalysis> {
-
+	
+	// base annotations
 	protected final AnnotationMirror IndexFor;
 	protected final AnnotationMirror IndexBottom;
 	protected final AnnotationMirror IndexOrLow;
 	protected final AnnotationMirror IndexOrHigh;
 	protected final AnnotationMirror LTLength;
+	
+	// methods to get values
+	protected final ExecutableElement IndexForValueElement;
+	protected final ProcessingEnvironment env;
 
 	public IndexAnnotatedTypeFactory(BaseTypeChecker checker) {
 		super(checker);
@@ -47,6 +55,9 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 		IndexOrLow = AnnotationUtils.fromClass(elements, IndexOrLow.class);
 		IndexOrHigh = AnnotationUtils.fromClass(elements, IndexOrHigh.class);
 		LTLength = AnnotationUtils.fromClass(elements, LTLength.class);
+		
+		env = checker.getProcessingEnvironment();
+		IndexForValueElement = TreeUtils.getMethod("org.checkerframework.checker.index.qual.IndexFor", "value", 0, env);
 		this.postInit();
 	}
 
@@ -103,10 +114,39 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 			return super.visitBinary(tree, type);
 		}
 		
+		// do addition between types
 		public void visitPlus(BinaryTree tree, AnnotatedTypeMirror type){
+			AnnotatedTypeMirror left = getAnnotatedType(tree.getLeftOperand());
+			AnnotatedTypeMirror right = getAnnotatedType(tree.getRightOperand());
 			
+			// if the right side is a literal we do some special stuff(specifically for 1)
+			if(tree.getRightOperand().getKind() == Tree.Kind.INT_LITERAL){
+				int val = (int) ((LiteralTree)tree.getRightOperand()).getValue();
+				if(val == 1){
+					// for every annotation the left has change each indexFor into IndexOrHigh
+					for(AnnotationMirror anno: left.getAnnotations()){
+						if(qualHierarchy.isSubtype(anno, IndexOrLow)){
+							left.removeAnnotation(anno);
+							String value = IndexVisitor.getIndexValue(anno, getValueMethod(anno));
+							type.addAnnotation(createIndexOrHighAnnotation(value));						
+						}
+					}
+				}
+				
+			}
 		}
 		
+		private ExecutableElement getValueMethod(AnnotationMirror anno) {
+			if(AnnotationUtils.areSameIgnoringValues(anno, IndexFor)){
+				return TreeUtils.getMethod("org.checkerframework.checker.index.qual.IndexFor", "value", 0, env);
+			}
+			if(AnnotationUtils.areSameIgnoringValues(anno, IndexOrLow)){
+				return TreeUtils.getMethod("org.checkerframework.checker.index.qual.IndexOrLow", "value", 0, env);
+			}
+			// TODO:change this later
+			return null;
+		}
+
 		public void visitMinus(BinaryTree tree, AnnotatedTypeMirror type){
 			
 		}
