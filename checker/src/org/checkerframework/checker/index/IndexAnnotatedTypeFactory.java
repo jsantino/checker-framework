@@ -143,7 +143,12 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 			if(AnnotationUtils.areSameIgnoringValues(anno, IndexOrLow)){
 				return TreeUtils.getMethod("org.checkerframework.checker.index.qual.IndexOrLow", "value", 0, env);
 			}
-			// TODO:change this later
+			if(AnnotationUtils.areSameIgnoringValues(anno, IndexOrHigh)){
+				return TreeUtils.getMethod("org.checkerframework.checker.index.qual.IndexOrHigh", "value", 0, env);
+			}
+			if(AnnotationUtils.areSameIgnoringValues(anno, LTLength)){
+				return TreeUtils.getMethod("org.checkerframework.checker.index.qual.LTLength", "value", 0, env);
+			}
 			return null;
 		}
 
