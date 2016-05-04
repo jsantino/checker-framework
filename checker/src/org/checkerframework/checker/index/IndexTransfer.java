@@ -2,34 +2,38 @@ package org.checkerframework.checker.index;
 
 import javax.lang.model.element.AnnotationMirror;
 
-import org.checkerframework.checker.nonneg.NonNegAnalysis;
-import org.checkerframework.checker.nonneg.NonNegAnnotatedTypeFactory;
+import org.checkerframework.checker.index.qual.*;
+import org.checkerframework.dataflow.analysis.ConditionalTransferResult;
+import org.checkerframework.dataflow.analysis.FlowExpressions.LocalVariable;
+import org.checkerframework.dataflow.analysis.FlowExpressions.Receiver;
 import org.checkerframework.dataflow.analysis.RegularTransferResult;
 import org.checkerframework.dataflow.analysis.TransferInput;
 import org.checkerframework.dataflow.analysis.TransferResult;
 import org.checkerframework.dataflow.cfg.node.FieldAccessNode;
-import org.checkerframework.dataflow.cfg.node.GreaterThanOrEqualNode;
-import org.checkerframework.dataflow.cfg.node.NumericalSubtractionNode;
+import org.checkerframework.dataflow.cfg.node.GreaterThanNode;
+import org.checkerframework.dataflow.cfg.node.LocalVariableNode;
+import org.checkerframework.dataflow.cfg.node.Node;
 import org.checkerframework.framework.flow.CFAbstractTransfer;
 import org.checkerframework.framework.flow.CFStore;
 import org.checkerframework.framework.flow.CFValue;
+import org.checkerframework.framework.type.AnnotatedTypeMirror;
 
 
 public class IndexTransfer extends CFAbstractTransfer<CFValue, CFStore, IndexTransfer> {
 	protected IndexAnalysis analysis;
-	
+	protected IndexAnnotatedTypeFactory atypeFactory;
+
 	public IndexTransfer(IndexAnalysis analysis) {
 		super(analysis);
 		this.analysis = analysis;
+		atypeFactory = (IndexAnnotatedTypeFactory) analysis.getTypeFactory();
 	}
-	
+
 	// annotate arr.length to be IndexOrHigh("arr")
 	@Override
 	public TransferResult<CFValue, CFStore> visitFieldAccess(FieldAccessNode node, TransferInput<CFValue, CFStore> in) {
-
-		IndexAnnotatedTypeFactory atypeFactory = (IndexAnnotatedTypeFactory) analysis.getTypeFactory();
 		TransferResult<CFValue, CFStore> result = super.visitFieldAccess(node, in);
-		
+
 		if(node.getFieldName().equals("length")){
 			AnnotationMirror anno = atypeFactory.createIndexOrHighAnnotation(node.getReceiver().toString());
 			CFValue newResultValue = analysis.createSingleAnnotationValue(anno, result.getResultValue().getType().getUnderlyingType());
@@ -38,5 +42,44 @@ public class IndexTransfer extends CFAbstractTransfer<CFValue, CFStore, IndexTra
 
 		return result;
 	}
+
+	@Override
+	public TransferResult<CFValue, CFStore> visitGreaterThan(GreaterThanNode node, TransferInput<CFValue, CFStore> in){
+		TransferResult<CFValue, CFStore> result = super.visitGreaterThan(node, in);
+		Node left = node.getLeftOperand();
+		Node right = node.getRightOperand();
+		if(left instanceof LocalVariableNode){
+			LocalVariableNode localLeft = (LocalVariableNode) left;
+			Receiver rec = new LocalVariable(localLeft);
+			AnnotatedTypeMirror leftType = atypeFactory.getAnnotatedType(left.getTree());
+			if(leftType.hasAnnotation(Unknown.class)){
+				return UnknownGreaterThan(rec,right, result);
+			}
+		}
+		
+		
+		return result;
 	}
+	//********************************************************************************//
+	// these are methods for GreaterThan Nodes once left operand Annotation is known  //
+	//********************************************************************************//
+	// this returns a transfer result for @Unknown > x
+	private TransferResult<CFValue, CFStore> UnknownGreaterThan(Receiver rec, Node right, TransferResult<CFValue, CFStore> result){
+		CFStore thenStore = result.getRegularStore();
+		CFStore elseStore = thenStore.copy();
+		ConditionalTransferResult<CFValue, CFStore> newResult = 
+				new ConditionalTransferResult<>(result.getResultValue(), thenStore, elseStore);
+		AnnotatedTypeMirror rightType = atypeFactory.getAnnotatedType(right.getTree());
+		boolean IOL = rightType.hasAnnotation(IndexOrLow.class);
+		boolean NN = rightType.hasAnnotation(NonNegative.class);
+		boolean IOH = rightType.hasAnnotation(IndexOrHigh.class);
+		boolean IF = rightType.hasAnnotation(IndexFor.class);
+		if(IOL || NN || IOH || IF){
+			AnnotationMirror anno = atypeFactory.createNonNegAnnotation();
+			thenStore.insertValue(rec, anno);
+			return newResult;
+		}
+		return result;
+	}
+}
 
