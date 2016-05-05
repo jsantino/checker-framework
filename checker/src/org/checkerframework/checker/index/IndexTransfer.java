@@ -4,6 +4,7 @@ import javax.lang.model.element.AnnotationMirror;
 
 import org.checkerframework.checker.index.qual.*;
 import org.checkerframework.dataflow.analysis.ConditionalTransferResult;
+import org.checkerframework.dataflow.analysis.FlowExpressions;
 import org.checkerframework.dataflow.analysis.FlowExpressions.LocalVariable;
 import org.checkerframework.dataflow.analysis.FlowExpressions.Receiver;
 import org.checkerframework.dataflow.analysis.RegularTransferResult;
@@ -48,16 +49,13 @@ public class IndexTransfer extends CFAbstractTransfer<CFValue, CFStore, IndexTra
 		TransferResult<CFValue, CFStore> result = super.visitGreaterThan(node, in);
 		Node left = node.getLeftOperand();
 		Node right = node.getRightOperand();
-		if(left instanceof LocalVariableNode){
-			LocalVariableNode localLeft = (LocalVariableNode) left;
-			Receiver rec = new LocalVariable(localLeft);
-			AnnotatedTypeMirror leftType = atypeFactory.getAnnotatedType(left.getTree());
-			if(leftType.hasAnnotation(Unknown.class)){
-				return UnknownGreaterThan(rec,right, result);
-			}
+		Receiver rec = FlowExpressions.internalReprOf(analysis.getTypeFactory(), left);
+		AnnotatedTypeMirror leftType = atypeFactory.getAnnotatedType(left.getTree());
+		if(leftType.hasAnnotation(Unknown.class)){
+			return UnknownGreaterThan(rec,right, result);
 		}
-		
-		
+
+
 		return result;
 	}
 	//********************************************************************************//
@@ -70,10 +68,12 @@ public class IndexTransfer extends CFAbstractTransfer<CFValue, CFStore, IndexTra
 		ConditionalTransferResult<CFValue, CFStore> newResult = 
 				new ConditionalTransferResult<>(result.getResultValue(), thenStore, elseStore);
 		AnnotatedTypeMirror rightType = atypeFactory.getAnnotatedType(right.getTree());
+		// booleans to see if the type is any in the heirarchy we want to refine
 		boolean IOL = rightType.hasAnnotation(IndexOrLow.class);
 		boolean NN = rightType.hasAnnotation(NonNegative.class);
 		boolean IOH = rightType.hasAnnotation(IndexOrHigh.class);
 		boolean IF = rightType.hasAnnotation(IndexFor.class);
+		//
 		if(IOL || NN || IOH || IF){
 			AnnotationMirror anno = atypeFactory.createNonNegAnnotation();
 			thenStore.insertValue(rec, anno);
