@@ -59,10 +59,12 @@ public class IndexTransfer extends CFAbstractTransfer<CFValue, CFStore, IndexTra
 				new ConditionalTransferResult<>(result.getResultValue(), thenStore, elseStore);
 		
 		if(leftType.hasAnnotation(Unknown.class)){
-			UnknownGreaterThan(rec,right, thenStore);
+			UnknownGreaterThan(rec, right, thenStore);
 		}
 		if(leftType.hasAnnotation(IndexOrLow.class)){
-			//return IndexOrLowGreaterThan(rec, right, thenStore);
+			AnnotationMirror leftAnno = leftType.getAnnotation(IndexOrLow.class);
+			String name = getValue(leftAnno);
+			IndexOrLowGreaterThan(rec, right, thenStore, name);
 		}
 
 
@@ -86,21 +88,24 @@ public class IndexTransfer extends CFAbstractTransfer<CFValue, CFStore, IndexTra
 		}
 	}
 	
-//	private TransferResult<CFValue, CFStore> IndexOrLowGreaterThan(Receiver rec, Node right,
-//			TransferResult<CFValue, CFStore> result) {
-//		CFStore thenStore = result.getRegularStore();
-//		CFStore elseStore = thenStore.copy();
-//		ConditionalTransferResult<CFValue, CFStore> newResult = 
-//				new ConditionalTransferResult<>(result.getResultValue(), thenStore, elseStore);
-//		AnnotatedTypeMirror rightType = atypeFactory.getAnnotatedType(right.getTree());
-//		for(AnnotationMirror anno: rightType.getAnnotations()){
-//			boolean IOL = AnnotationUtils.areSameIgnoringValues(anno, atypeFactory.IndexOrLow);
-//			boolean InF = AnnotationUtils.areSameIgnoringValues(anno, atypeFactory.IndexFor);
-//			if(IOL || InF){
-//				String aValue = IndexVisitor.getIndexValue(anno, atypeFactory.getValueMethod(anno));
-//			}
-//		}
-//	}
+	private void IndexOrLowGreaterThan(Receiver rec, Node right, CFStore thenStore, String name) {
 
+		AnnotatedTypeMirror rightType = atypeFactory.getAnnotatedType(right.getTree());
+		for(AnnotationMirror anno: rightType.getAnnotations()){
+			boolean IOL = AnnotationUtils.areSameIgnoringValues(anno, atypeFactory.IndexOrLow);
+			boolean InF = AnnotationUtils.areSameIgnoringValues(anno, atypeFactory.IndexFor);
+			if(IOL || InF){
+				String aValue = getValue(anno);
+				if(name.equalsIgnoreCase(aValue)){
+					thenStore.insertValue(rec, atypeFactory.createIndexForAnnotation(name));
+				}
+			}
+		}
+	}
+
+	// uses a helper method in the visitor and the factory to get the value of the annotation
+	public String getValue(AnnotationMirror anno){
+		return IndexVisitor.getIndexValue(anno, atypeFactory.getValueMethod(anno));
+	}
 }
 
