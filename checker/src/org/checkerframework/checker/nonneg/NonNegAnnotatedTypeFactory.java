@@ -19,6 +19,8 @@ import org.checkerframework.framework.util.AnnotationBuilder;
 import org.checkerframework.javacutil.AnnotationUtils;
 import org.checkerframework.javacutil.Pair;
 
+import com.sun.source.tree.BinaryTree;
+import com.sun.source.tree.ExpressionTree;
 import com.sun.source.tree.LiteralTree;
 import com.sun.source.tree.Tree;
 
@@ -77,6 +79,20 @@ public class NonNegAnnotatedTypeFactory extends GenericAnnotatedTypeFactory<CFVa
 			}
 			return super.visitLiteral(tree, type);
 		}
+		
+		@Override
+		public Void visitBinary(BinaryTree tree, AnnotatedTypeMirror type){
+			switch (tree.getKind()){
+			case MINUS:
+				type.clearAnnotations();
+				type.addAnnotation(createNonNegAnnotation());
+				break;
+			default:
+				break;
+			}
+			return super.visitBinary(tree, type);
+		}
+
 
 	}
 }

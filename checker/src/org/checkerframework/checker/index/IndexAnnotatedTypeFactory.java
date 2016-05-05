@@ -206,23 +206,6 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 			}
 		}
 
-		// returns the value method specific to the class of the anno passed in
-		private ExecutableElement getValueMethod(AnnotationMirror anno) {
-			if(AnnotationUtils.areSameIgnoringValues(anno, IndexFor)){
-				return TreeUtils.getMethod("org.checkerframework.checker.index.qual.IndexFor", "value", 0, env);
-			}
-			if(AnnotationUtils.areSameIgnoringValues(anno, IndexOrLow)){
-				return TreeUtils.getMethod("org.checkerframework.checker.index.qual.IndexOrLow", "value", 0, env);
-			}
-			if(AnnotationUtils.areSameIgnoringValues(anno, IndexOrHigh)){
-				return TreeUtils.getMethod("org.checkerframework.checker.index.qual.IndexOrHigh", "value", 0, env);
-			}
-			if(AnnotationUtils.areSameIgnoringValues(anno, LTLength)){
-				return TreeUtils.getMethod("org.checkerframework.checker.index.qual.LTLength", "value", 0, env);
-			}
-			return null;
-		}
-
 		public void visitMinus(BinaryTree tree, AnnotatedTypeMirror type){
 
 		}
@@ -334,6 +317,23 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 		AnnotationBuilder builder = new AnnotationBuilder(processingEnv, IndexFor.class);
 		builder.setValue("value", name);
 		return builder.build();
+	}
+
+	// returns the value method specific to the class of the anno passed in
+	protected ExecutableElement getValueMethod(AnnotationMirror anno) {
+		if(AnnotationUtils.areSameIgnoringValues(anno, IndexFor)){
+			return TreeUtils.getMethod("org.checkerframework.checker.index.qual.IndexFor", "value", 0, env);
+		}
+		if(AnnotationUtils.areSameIgnoringValues(anno, IndexOrLow)){
+			return TreeUtils.getMethod("org.checkerframework.checker.index.qual.IndexOrLow", "value", 0, env);
+		}
+		if(AnnotationUtils.areSameIgnoringValues(anno, IndexOrHigh)){
+			return TreeUtils.getMethod("org.checkerframework.checker.index.qual.IndexOrHigh", "value", 0, env);
+		}
+		if(AnnotationUtils.areSameIgnoringValues(anno, LTLength)){
+			return TreeUtils.getMethod("org.checkerframework.checker.index.qual.LTLength", "value", 0, env);
+		}
+		return null;
 	}
 
 
