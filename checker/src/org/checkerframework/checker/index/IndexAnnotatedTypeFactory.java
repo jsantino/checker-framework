@@ -34,6 +34,7 @@ import com.sun.source.tree.LiteralTree;
 import com.sun.source.tree.MemberReferenceTree;
 import com.sun.source.tree.MemberSelectTree;
 import com.sun.source.tree.Tree;
+import com.sun.source.tree.UnaryTree;
 
 public class IndexAnnotatedTypeFactory
 extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalysis> {
@@ -147,6 +148,13 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 						String value = IndexVisitor.getIndexValue(anno, getValueMethod(anno));
 						type.addAnnotation(createIndexOrHighAnnotation(value));						
 					}
+					else if(qualHierarchy.isSubtype(anno, NonNegative)){
+						type.removeAnnotation(anno);
+						type.addAnnotation(createNonNegAnnotation());
+					}
+					else{
+						type.removeAnnotation(anno);
+					}
 				}
 				// anything a subtype of nonneg + subtype nonneg = nonnegative
 				else if(right.hasAnnotationRelaxed(IndexFor) || right.hasAnnotationRelaxed(IndexOrHigh) || right.hasAnnotation(NonNegative)){
@@ -164,6 +172,40 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 				}
 			}
 		}
+		
+		// make increments and decrements work properly
+		@Override
+		public Void visitUnary(UnaryTree tree,  AnnotatedTypeMirror type){
+			switch(tree.getKind()){
+			case PREFIX_INCREMENT:
+				preInc(tree, type);
+				break;
+			case POSTFIX_INCREMENT:
+				break;
+			default:
+				break;
+			}
+			return super.visitUnary(tree, type);
+		}
+		
+		private void preInc(UnaryTree tree, AnnotatedTypeMirror type) {
+			AnnotatedTypeMirror  ATM = getAnnotatedType(tree.getExpression());
+			for(AnnotationMirror anno: ATM.getAnnotations()){
+				if(qualHierarchy.isSubtype(anno, IndexOrLow)){
+					type.removeAnnotation(anno);
+					String value = IndexVisitor.getIndexValue(anno, getValueMethod(anno));
+					type.addAnnotation(createIndexOrHighAnnotation(value));						
+				}
+				else if(qualHierarchy.isSubtype(anno, NonNegative)){
+					type.removeAnnotation(anno);
+					type.addAnnotation(createNonNegAnnotation());
+				}
+				else{
+					type.removeAnnotation(anno);
+				}
+			}
+		}
+
 		// returns the value method specific to the class of the anno passed in
 		private ExecutableElement getValueMethod(AnnotationMirror anno) {
 			if(AnnotationUtils.areSameIgnoringValues(anno, IndexFor)){
