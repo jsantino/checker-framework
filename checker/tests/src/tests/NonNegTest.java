@@ -7,7 +7,7 @@ import java.io.File;
 import org.junit.runners.Parameterized.Parameters;
 
 /**
- * JUnit tests for the NonNeg checker when reflection resolution is enabled
+ * JUnit tests for the NonNeg checker.
  */
 public class NonNegTest extends CheckerFrameworkTest {
 
