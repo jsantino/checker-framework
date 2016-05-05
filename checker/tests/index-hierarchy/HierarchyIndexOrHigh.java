@@ -1,7 +1,11 @@
+import org.checkerframework.checker.index.qual.*;
+
+import org.checkerframework.checker.index.qual.*;
+
 class HierarchyIndexOrHigh {
 	
-	int arr = new int[5];
-	int arrB = new int[5];
+	int[] arr = new int[5];
+	int[] arrB = new int[5];
 	
 	@IndexOrHigh("arr") int i;
 	

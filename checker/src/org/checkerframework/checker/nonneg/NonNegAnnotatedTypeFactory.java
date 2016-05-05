@@ -80,4 +80,3 @@ public class NonNegAnnotatedTypeFactory extends GenericAnnotatedTypeFactory<CFVa
 
 	}
 }
-

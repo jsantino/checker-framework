@@ -14,6 +14,7 @@ import org.checkerframework.javacutil.TreeUtils;
 
 import com.sun.source.tree.ArrayAccessTree;
 import com.sun.source.tree.ExpressionTree;
+import com.sun.source.tree.MethodInvocationTree;
 
 
 
@@ -21,11 +22,14 @@ import com.sun.source.tree.ExpressionTree;
 public class IndexVisitor extends BaseTypeVisitor<IndexAnnotatedTypeFactory> {
 	
 	protected final ExecutableElement IndexValueElement;
+	protected final ExecutableElement ListGet;
+	protected final ProcessingEnvironment env;
 
 	public IndexVisitor(BaseTypeChecker checker) {
 		super(checker);
-		ProcessingEnvironment env = checker.getProcessingEnvironment();
-		IndexValueElement = TreeUtils.getMethod("Index.qual.IndexFor", "value", 0, env);
+		env = checker.getProcessingEnvironment();
+		IndexValueElement = TreeUtils.getMethod("org.checkerframework.checker.index.qual.IndexFor", "value", 0, env);
+		ListGet = TreeUtils.getMethod("java.util.List", "get", 1, env);
 	}
 	
 	@Override
@@ -35,13 +39,31 @@ public class IndexVisitor extends BaseTypeVisitor<IndexAnnotatedTypeFactory> {
 		AnnotatedTypeMirror indexType = atypeFactory.getAnnotatedType(index);
 		// warn if not Index for
 		if (!indexType.hasAnnotation(IndexFor.class)) {
-			checker.report(Result.warning("Potentially unsafe array access: only use @IndexFor as index"), index);
+			checker.report(Result.warning("Potentially unsafe array access: only use @IndexFor as index. Found: " + indexType.toString()), index);
 		}
 		// warn if it is IndexFor nut not the right array
 		else if(!(getIndexValue(indexType.getAnnotation(IndexFor.class), IndexValueElement).equals(name))){
-			checker.report(Result.warning("Potentially unsafe array access: only use IndexFor("+ name +") index"), index);
+			checker.report(Result.warning("Potentially unsafe array access: only use IndexFor("+ name +") index. Found: " + indexType.toString()), index);
 		}
 		return super.visitArrayAccess(tree, type);
+	}
+	@Override
+	public Void visitMethodInvocation(MethodInvocationTree tree, Void type){
+		String name = tree.getMethodSelect().toString();
+		if(TreeUtils.isMethodInvocation(tree, ListGet, env)){
+			ExpressionTree index = tree.getArguments().get(0);
+			String listName = name.split("\\.")[0];
+			AnnotatedTypeMirror indexType = atypeFactory.getAnnotatedType(index);
+			if(!indexType.hasAnnotation(IndexFor.class)){
+				checker.report(Result.warning("potentially unsafe list access: only use @IndexFor as index.  Found: " + indexType.toString()), index);
+			}
+			else if(!(getIndexValue(indexType.getAnnotation(IndexFor.class), IndexValueElement).equals(listName))){
+				checker.report(Result.warning("Potentially unsafe list access: only use IndexFor("+ listName +") index.  Found: " + indexType.toString()), index);
+			}
+			
+		}
+		return super.visitMethodInvocation(tree, type);
+		
 	}
 	
 	// returns the value of an IndexFor annotation, given the annotation and Value method

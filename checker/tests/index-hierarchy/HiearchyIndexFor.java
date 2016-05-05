@@ -1,7 +1,9 @@
+import org.checkerframework.checker.index.qual.*;
+
 class HierarchyIndexFor {
 	
-	int arr = new int[5];
-	int arrB = new int[5];
+	int[] arr = new int[5];
+	int[] arrB = new int[5];
 	
 	@IndexFor("arr") int i;
 	

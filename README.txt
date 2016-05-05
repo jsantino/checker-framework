@@ -1,4 +1,7 @@
-Please see the Checker Framework manual.
+
+For information on the indexchecker, please see README-IndexChecker.txt located in this same directory.
+
+For information on the checker-framework, please see the Checker Framework manual.
 
 It appears in this repository (after you run `make -C checker/manual`):
 
