@@ -183,13 +183,13 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 				// if right side is 1
 				if(rightExpr.getKind() == Tree.Kind.INT_LITERAL && (int)((LiteralTree)rightExpr).getValue() == 1){
 					// if left sub IOH it becomes IOL
-					if(hierarchy.isSubtype(anno, IndexOrHigh)){
+					if(hierarchy.isSubtypeRelaxed(anno, IndexOrHigh)){
 						type.removeAnnotation(anno);
 						String value = IndexVisitor.getIndexValue(anno, getValueMethod(anno));
 						type.addAnnotation(createIndexOrLowAnnotation(value));						
 					}
 					// if left subtype NN
-					else if(hierarchy.isSubtype(anno, NonNegative)){
+					else if(hierarchy.isSubtypeRelaxed(anno, NonNegative)){
 						type.removeAnnotation(anno);
 						String value = IndexVisitor.getIndexValue(anno, getValueMethod(anno));
 						type.addAnnotation(createLTLengthAnnotation(value));	
