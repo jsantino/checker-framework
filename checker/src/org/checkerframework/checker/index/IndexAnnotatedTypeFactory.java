@@ -222,7 +222,8 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 			case PREFIX_INCREMENT:
 				preInc(tree, type);
 				break;
-			case POSTFIX_INCREMENT:
+			case PREFIX_DECREMENT:
+				preDec(tree, type);
 				break;
 			default:
 				break;
@@ -241,6 +242,24 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 				else if(qualHierarchy.isSubtype(anno, NonNegative)){
 					type.removeAnnotation(anno);
 					type.addAnnotation(createNonNegAnnotation());
+				}
+				else{
+					type.removeAnnotation(anno);
+				}
+			}
+		}
+		private void preDec(UnaryTree tree, AnnotatedTypeMirror type) {
+			AnnotatedTypeMirror  ATM = getAnnotatedType(tree.getExpression());
+			for(AnnotationMirror anno: ATM.getAnnotations()){
+				if(qualHierarchy.isSubtype(anno, IndexOrHigh)){
+					type.removeAnnotation(anno);
+					String value = IndexVisitor.getIndexValue(anno, getValueMethod(anno));
+					type.addAnnotation(createIndexOrLowAnnotation(value));						
+				}
+				else if(qualHierarchy.isSubtype(anno, NonNegative)){
+					type.removeAnnotation(anno);
+					String value = IndexVisitor.getIndexValue(anno, getValueMethod(anno));
+					type.addAnnotation(createLTLengthAnnotation(value));
 				}
 				else{
 					type.removeAnnotation(anno);
