@@ -4,9 +4,8 @@ class TypeRuleIndexOrHigh {
   
 	int[] arr = new int[5];
 	
-	// TODO: define error
-	//:: error :
 	int accessArray (@IndexOrHigh("arr") int i) {
+		//:: warning: (Potentially unsafe array access: only use @IndexFor as index. Found: @IndexOrHigh("arr") int)
 		return arr[i];
 	}
 }

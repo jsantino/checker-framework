@@ -4,9 +4,8 @@ class TypeRuleLTLength {
   
 	int[] arr = new int[5];
 	
-	// TODO: define error
-	//:: error :
 	int accessArray (@LTLength("arr") int i) {
+		//:: warning: (Potentially unsafe array access: only use @IndexFor as index. Found: @LTLength("arr") int)
 		return arr[i];
 	}
 }

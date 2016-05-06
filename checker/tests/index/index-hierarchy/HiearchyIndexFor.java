@@ -37,7 +37,6 @@ class HierarchyIndexFor {
 	}
 
 	void assignIndexForB(@IndexFor("arrB") int v) { 
-		//:: error: (assignment.type.incompatible)
 		i = v;
 	}
 
@@ -46,7 +45,7 @@ class HierarchyIndexFor {
 		i = v;
 	}
 
-	void assignIndexOrLowB(@IndexOrLowB("arrB") int v) { 
+	void assignIndexOrLowB(@IndexOrLow("arrB") int v) { 
 		//:: error: (assignment.type.incompatible)
 		i = v;
 	}

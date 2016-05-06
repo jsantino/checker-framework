@@ -13,7 +13,7 @@ class IntroRuleImplicitIndexOrHigh {
 		
 		// Idea: prove type of variable v by assigning it to a variable of type t and assigning a variable of type t to v
 		@IndexOrHigh("arr") int indexOrHigh1 = arr.length;
-		@IndexorHigh("arr") int indexOrHigh2 = arr.length;
+		@IndexOrHigh("arr") int indexOrHigh2 = arr.length;
 		
 		// Prove type of v1,v2 is subtype of IndexOrHigh
 		indexOrHigh1 = v2;

@@ -4,9 +4,8 @@ class TypeRuleNonNegative {
   
 	int[] arr = new int[5];
 	
-	// TODO: define error
-	//:: error :
 	int accessArray (@NonNegative("arr") int i) {
+		//:: warning: (Potentially unsafe array access: only use @IndexFor as index. Found: @NonNegative("arr") int)
 		return arr[i];
 	}
 }

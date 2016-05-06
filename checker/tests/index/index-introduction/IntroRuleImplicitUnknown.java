@@ -9,7 +9,7 @@ class IntroRuleImplicitIndexOrHigh {
 		int v1 = -2; 
 		int v2 = -10;
 		int v3 = Integer.MIN_VALUE;
-		float f = -2.0;
+		float f = (float) -2.0;
 		int v4 = (int) f;
 		
 		// Idea: prove type of variable v by assigning it to a variable of type t and assigning a variable of type t to v

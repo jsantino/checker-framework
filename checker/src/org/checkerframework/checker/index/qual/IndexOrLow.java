@@ -7,5 +7,5 @@ import org.checkerframework.framework.qual.SubtypeOf;
 @SubtypeOf({Unknown.class, LTLength.class})
 @Target({ElementType.TYPE_USE, ElementType.TYPE_PARAMETER})
 public @interface IndexOrLow {
-	String value() default "";	
+	String value() default "";
 }

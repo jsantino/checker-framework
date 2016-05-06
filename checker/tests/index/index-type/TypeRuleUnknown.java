@@ -4,9 +4,8 @@ class TypeRuleUnknown {
   
 	int[] arr = new int[5];
 	
-	// TODO: define error
-	//:: error :
 	int accessArray (@Unknown int i) {
+		//:: warning: (Potentially unsafe array access: only use @IndexFor as index. Found: @Unknown int)
 		return arr[i];
 	}
 }
