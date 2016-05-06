@@ -2,8 +2,8 @@ import org.checkerframework.checker.index.qual.*;
 
 class HierarchyIndexFor {
 	
-	int arr = new int[5];
-	int arrB = new int[5];
+	int[] arr = new int[5];
+	int[] arrB = new int[5];
 	
 	@Unknown int i;
 	
@@ -39,7 +39,7 @@ class HierarchyIndexFor {
 		i = v;
 	}
 
-	void assignIndexOrLowB(@IndexOrLowB("arrB") int v) { 
+	void assignIndexOrLowB(@IndexOrLow("arrB") int v) { 
 		i = v;
 	}
 	

@@ -42,7 +42,7 @@ class HiearchyNonNegative {
 		i = v;
 	}
 
-	void assignIndexOrLowB(@IndexOrLowB("arrB") int v) { 
+	void assignIndexOrLowB(@IndexOrLow("arrB") int v) { 
 		//:: error: (assignment.type.incompatible)
 		i = v;
 	}
