@@ -1,12 +1,12 @@
 import org.checkerframework.checker.index.qual.*;
 
-class IntroRuleIndexOrHigh.java {
+class IntroRuleIndexOrHigh {
 	
 	int[] arr = new int[5];
 	
 	void foo() {
 		@IndexOrHigh("arr") int v1 = arr.length;
-		@IndexOrHigh("arr") int v2 = 0;
+		@IndexOrHigh("") int v2 = 0;
 	}
 	
 	void foo2() {
