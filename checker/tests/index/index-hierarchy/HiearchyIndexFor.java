@@ -37,6 +37,7 @@ class HierarchyIndexFor {
 	}
 
 	void assignIndexForB(@IndexFor("arrB") int v) { 
+		//:: error: (assignment.type.incompatible)
 		i = v;
 	}
 
