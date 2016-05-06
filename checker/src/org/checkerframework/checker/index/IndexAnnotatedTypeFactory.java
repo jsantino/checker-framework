@@ -254,7 +254,22 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 		//  is there a better way to do this?
 		@Override
 		public boolean isSubtype(AnnotationMirror rhs, AnnotationMirror lhs) {
-			// Ignore annotation values to ensure that annotation is in supertype map.
+			boolean rightNonNeg = AnnotationUtils.areSameIgnoringValues(rhs, NonNegative);
+			boolean rightUnknown = AnnotationUtils.areSameIgnoringValues(rhs, Unknown);
+			boolean rightBottom = AnnotationUtils.areSameIgnoringValues(rhs, IndexBottom);
+			boolean rightHasValueMethod = !(rightNonNeg || rightUnknown || rightBottom);
+			
+			boolean leftNonNeg = AnnotationUtils.areSameIgnoringValues(lhs, NonNegative);
+			boolean leftUnknown = AnnotationUtils.areSameIgnoringValues(lhs, Unknown);
+			boolean leftBottom = AnnotationUtils.areSameIgnoringValues(lhs, IndexBottom);
+			boolean leftHasValueMethod = !(leftNonNeg || leftUnknown || leftBottom);
+			if(rightHasValueMethod && leftHasValueMethod){
+				String valueRight = IndexVisitor.getIndexValue(rhs, getValueMethod(rhs));
+				String valueLeft  = IndexVisitor.getIndexValue(lhs, getValueMethod(lhs));
+				if(!valueRight.equals(valueLeft)){
+					return false;
+				}
+			}
 			return super.isSubtype(refine(rhs), refine(lhs));
 		}
 
