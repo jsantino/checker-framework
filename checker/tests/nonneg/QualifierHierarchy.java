@@ -14,8 +14,9 @@ public class QualifierHierarchy {
     	@Unknown int c = -1;
     	@Unknown int d = 3;
     	
-        //:: warning: (assignment.type.incompatible)
+        //:: error: (assignment.type.incompatible)
     	@NonNegative int e = -1;
+    	testNN(e);
     }
     
     void testUserWrittenAssignment() {
@@ -26,7 +27,7 @@ public class QualifierHierarchy {
     	@Unknown int d = c;
     	@Unknown int e = a;
     	
-    	//:: warning: (assignment.type.incompatible)
+    	//:: error: (assignment.type.incompatible)
     	@NonNegative int f = c;
     }
     
@@ -38,14 +39,23 @@ public class QualifierHierarchy {
     	@NonNegative int a = 1;
 
         @NonNegative int n1 = 1;
-        test(n1);
+        testUK(n1);
         @Unknown int n2 = -1;
-        //:: warning: (argument.type.incompatible)
-        test(n2);
+        //:: error: (argument.type.incompatible)
+        testNN(n2);
         
         @Unknown int n3 = 2;
-        //:: warning: (assignment.type.incompatible)
         @NonNegative int n4 = n3;
 
     }
+    
+    void testUK(@Unknown int a) {
+    	a = -1;
+    }
+    
+    void testNN(@NonNegative int a) {
+    	//:: error: (assignment.type.incompatible)
+    	a = -1;
+    }
+    
 }

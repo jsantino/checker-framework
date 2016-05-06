@@ -10,11 +10,11 @@ public class ArrayAccess {
     	int[] arr = new int[10];
     	
     	@NonNegative int a = 1;
-    	@Unknown int b = 1;
+    	@Unknown int b = -2;
     	
-    	arr[a];
+    	int c = arr[a];
     	
-        //:: warning: (assignment.type.incompatible)
-    	arr[b];	
+        //:: warning: (Potentially unsafe array access: only use NonNegative index)
+    	int d = arr[b];
     }
 }

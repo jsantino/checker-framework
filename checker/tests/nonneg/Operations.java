@@ -21,9 +21,9 @@ public class Operations {
     	@Unknown int i = c + 1;
     	@Unknown int j = c + -1;
     	
-        //:: warning: (assignment.type.incompatible)
+        //:: error: (assignment.type.incompatible)
     	@NonNegative int k = a + c;
-    	//:: warning: (assignment.type.incompatible)
+    	//:: error: (assignment.type.incompatible)
     	@NonNegative int l = a + -10;	
     }
     
@@ -38,13 +38,13 @@ public class Operations {
     	@Unknown int f = c - a;
     	@Unknown int g = a - c;
     	
-        //:: warning: (assignment.type.incompatible)
+        //:: error: (assignment.type.incompatible)
     	@NonNegative int h = a - b;
-    	//:: warning: (assignment.type.incompatible)
+    	//:: error: (assignment.type.incompatible)
     	@NonNegative int i = a - c;
-    	//:: warning: (assignment.type.incompatible)
+    	//:: error: (assignment.type.incompatible)
     	@NonNegative int j = c - a;
-    	//:: warning: (assignment.type.incompatible)
+    	//:: error: (assignment.type.incompatible)
     	@NonNegative int k = a + -10;
     }
 }

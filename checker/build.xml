@@ -664,6 +664,14 @@
             <param name="param" value="tests.I18nTest"/>
         </antcall>
     </target>
+	
+    <!-- Custom checker. -->
+    <target name="index-tests" depends="jar,build-tests"
+            description="Run tests for the Index Checker">
+        <antcall target="-run-tests">
+            <param name="param" value="tests.IndexTest"/>
+        </antcall>
+    </target>
 
     <target name="interning-tests" depends="jar,build-tests"
             description="Run tests for the Interning Checker">
