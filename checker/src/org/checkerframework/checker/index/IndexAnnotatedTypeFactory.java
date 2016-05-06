@@ -110,7 +110,7 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 			return super.visitLiteral(tree, type);
 		}
 		//*****************************************************************//
-		// these are the method that handle Binary operations (+- etc.)    //
+		// these are the methods that handle Binary operations (+- etc.)    //
 		//*****************************************************************//
 		public Void visitBinary(BinaryTree tree, AnnotatedTypeMirror type){
 			switch (tree.getKind()){
@@ -209,28 +209,8 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 		public void visitMinus(BinaryTree tree, AnnotatedTypeMirror type){
 
 		}
-
-
-
-
-
-
-
-
-		// didn't work for intro a.length, doing it in transfer
-		/*		public Void visitMemberSelect(MemberSelectTree tree, AnnotatedTypeMirror type){
-			String name = tree.getExpression().toString();
-			String iden = tree.getIdentifier().toString();
-			if(iden.equals("length")){
-				System.out.println(tree.toString());
-				type.addAnnotation(createIndexOrHighAnnotation(name));
-			}
-			return super.visitMemberSelect(tree, type);
-		}*/
-
-
-
 	}
+	
 	@Override
 	protected Set<Class<? extends Annotation>> createSupportedTypeQualifiers() {
 		return getBundledTypeQualifiersWithPolyAll(IndexFor.class);
