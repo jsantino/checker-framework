@@ -37,7 +37,12 @@ public class IndexTransfer extends CFAbstractTransfer<CFValue, CFStore, IndexTra
 		TransferResult<CFValue, CFStore> result = super.visitFieldAccess(node, in);
 
 		if(node.getFieldName().equals("length")){
-			AnnotationMirror anno = atypeFactory.createIndexOrHighAnnotation(node.getReceiver().toString());
+			String arrName = node.getReceiver().toString();
+			if(arrName.contains(".")){
+				String[] objs = arrName.split("\\.");
+				arrName = objs[objs.length -1];
+			}
+			AnnotationMirror anno = atypeFactory.createIndexOrHighAnnotation(arrName);
 			CFValue newResultValue = analysis.createSingleAnnotationValue(anno, result.getResultValue().getType().getUnderlyingType());
 			return new RegularTransferResult<>(newResultValue, result.getRegularStore());
 		}
