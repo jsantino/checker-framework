@@ -11,6 +11,7 @@ class TransferAddIndexFor {
 	int[] arr = new int[5];
 	int[] arrB = new int[5];
 	
+	
 	@IndexFor("arr") int i = 2;
 	
 	void addIndexFor(@IndexFor("arr") int v) { 
@@ -47,8 +48,8 @@ class TransferAddIndexFor {
 	}
 	
 	void add1() { 
-		@IndexOrHigh int indexOrHigh1 = arr.length;
-		@IndexOrHigh int indexOrHigh2 = arr.length;
+		@IndexOrHigh("arr") int indexOrHigh1 = arr.length;
+		@IndexOrHigh("arr") int indexOrHigh2 = arr.length;
 		
 		int result = i + 1;
 		
@@ -92,7 +93,7 @@ class TransferAddIndexFor {
 
 	void addUnknown(@Unknown int v) { 
 		@Unknown int unknown1;
-		@Unkown int unknown2 = -10;
+		@Unknown int unknown2 = -10;
 		
 		int result = v + i;
 		
