@@ -15,7 +15,7 @@ class TransferAddIndexOrLow {
 	//:: error: (assignment.type.incompatible)
 	@IndexOrLow("arr") int i = 2;
 	
-	void addIndexFor(@IndexFor("arr") int v) { 
+	void addIndexFor(@IndexFor("arr") int v) {
 		@Unknown int unknown1 = -5;
 		@Unknown int unknown2 = -10;
 		
@@ -26,7 +26,7 @@ class TransferAddIndexOrLow {
 		result = unknown2;
 	}
 
-	void addIndexOrLow(@IndexOrLow("arr") int v) { 
+	void addIndexOrLow(@IndexOrLow("arr") int v) {
 		@Unknown int unknown1;
 		@Unknown int unknown2 = -10;
 		
@@ -37,7 +37,7 @@ class TransferAddIndexOrLow {
 		result = unknown2;
 	}
 	
-	void addIndexOrHigh(@IndexOrHigh("arr") int v) { 
+	void addIndexOrHigh(@IndexOrHigh("arr") int v) {
 		@Unknown int unknown1;
 		@Unknown int unknown2 = -10;
 		
@@ -48,7 +48,7 @@ class TransferAddIndexOrLow {
 		result = unknown2;
 	}
 	
-	void add1(@IndexOrHigh("arr") int indexOrHigh1, @IndexOrHigh("arr") int indexOrHigh2) { 
+	void add1(@IndexOrHigh("arr") int indexOrHigh1, @IndexOrHigh("arr") int indexOrHigh2) {
 		
 		int result = i + 1;
 		
@@ -57,7 +57,7 @@ class TransferAddIndexOrLow {
 		result = indexOrHigh2;
 	}
 	
-	void add0(@IndexOrLow("arr") int indexOrLow1, @IndexOrLow("arr") int indexOrLow2) { 
+	void add0(@IndexOrLow("arr") int indexOrLow1, @IndexOrLow("arr") int indexOrLow2) {
 
 		int result = i + 0;
 		
@@ -66,7 +66,7 @@ class TransferAddIndexOrLow {
 		result = indexOrLow2;
 	}
 	
-	void addLTLength(@LTLength("arr") int v) { 
+	void addLTLength(@LTLength("arr") int v) {
 		@Unknown int unknown1;
 		@Unknown int unknown2 = -10;
 		
@@ -77,7 +77,7 @@ class TransferAddIndexOrLow {
 		result = unknown2;
 	}
 	
-	void addNonNegative(@NonNegative int v) { 
+	void addNonNegative(@NonNegative int v) {
 		@Unknown int unknown;
 		@NonNegative int unknown = -10;
 		
@@ -88,7 +88,7 @@ class TransferAddIndexOrLow {
 		result = unknown2;
 	}
 
-	void addUnknown(@Unknown int v) { 
+	void addUnknown(@Unknown int v) {
 		@Unknown int unknown1;
 		@Unknown int unknown2 = -10;
 		
@@ -99,7 +99,7 @@ class TransferAddIndexOrLow {
 		result = unknown2;
 	}
 
-	void addIndexForB(@IndexFor("arrB") int v) { 
+	void addIndexForB(@IndexFor("arrB") int v) {
 		@Unknown int unknown1;
 		@Unknown int unknown2 = -10;
 		
@@ -110,7 +110,7 @@ class TransferAddIndexOrLow {
 		result = unknown2;
 	}
 	
-	void addIndexOrLowB(@IndexOrLow("arrB") int v) { 
+	void addIndexOrLowB(@IndexOrLow("arrB") int v) {
 		@Unknown int unknown1;
 		@Unknown int unknown2 = -10;
 		
@@ -121,7 +121,7 @@ class TransferAddIndexOrLow {
 		result = unknown2;
 	}
 
-	void addIndexOrHighB(@IndexOrHigh("arrB") int v) { 
+	void addIndexOrHighB(@IndexOrHigh("arrB") int v) {
 		@Unknown int unknown1 = 10;
 		@Unknown int unknown2 = 10;
 		
@@ -132,7 +132,7 @@ class TransferAddIndexOrLow {
 		result = unknown2;
 	}
 
-	void addLTLengthB(@LTLength("arrB") int v) { 
+	void addLTLengthB(@LTLength("arrB") int v) {
 		@Unknown int unknown1;
 		@Unknown int unknown2 = -10;
 		
