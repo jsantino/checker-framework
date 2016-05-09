@@ -69,7 +69,7 @@ public class NonNegTransfer extends CFAbstractTransfer<CFValue, CFStore, NonNegT
 	
 	// for checking > @NonNegative || > 1 transforms to @NonNegative
 	// same as >= but check for -1
-	@Override 
+	@Override
 	public TransferResult<CFValue, CFStore> visitGreaterThan(GreaterThanNode node, TransferInput<CFValue, CFStore> in) {
 		NonNegAnnotatedTypeFactory atypeFactory = (NonNegAnnotatedTypeFactory) analysis.getTypeFactory();
 		TransferResult<CFValue, CFStore> result = super.visitGreaterThan(node, in);

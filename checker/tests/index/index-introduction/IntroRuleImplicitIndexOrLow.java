@@ -8,7 +8,7 @@ class IntroRuleImplicitIndexOrHigh {
 	
 	void foo() {
 		
-		int v1 = -1; 
+		int v1 = -1;
 		
 		// Idea: prove type of variable v by assigning it to a variable of type t and assigning a variable of type t to v
 		@IndexOrLow("arr") int indexOrLow1 = arr.length -1;

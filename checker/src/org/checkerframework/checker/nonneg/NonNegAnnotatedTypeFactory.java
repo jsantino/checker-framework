@@ -74,7 +74,7 @@ public class NonNegAnnotatedTypeFactory extends GenericAnnotatedTypeFactory<CFVa
 			if (tree.getKind() == Tree.Kind.INT_LITERAL) {
 				if ((int)tree.getValue() > -1) {
 					type.addAnnotation(createNonNegAnnotation());
-					return super.visitLiteral(tree, type); 
+					return super.visitLiteral(tree, type);
 				}
 			}
 			type.addAnnotation(createUnknownAnnotation());

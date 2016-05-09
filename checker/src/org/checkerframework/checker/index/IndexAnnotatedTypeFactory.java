@@ -134,30 +134,42 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 			IndexQualifierHierarchy hierarchy = (IndexQualifierHierarchy) qualHierarchy;
 			AnnotatedTypeMirror left = getAnnotatedType(leftExpr);
 			AnnotatedTypeMirror right = getAnnotatedType(rightExpr);
-			// if left is literal 1 swap sides because we can handle that.
-			if(leftExpr.getKind()== Tree.Kind.INT_LITERAL && (int)((LiteralTree)leftExpr).getValue() == 1){
-				visitPlus(rightExpr, leftExpr, type);
-				return;
+			// if left is literal 1/0 swap sides because we can handle that.
+			if(leftExpr.getKind()== Tree.Kind.INT_LITERAL) {
+				int val = (int)((LiteralTree)leftExpr).getValue();
+				if(val == 1 || val == 0){
+					visitPlus(rightExpr, leftExpr, type);
+					return;
+				}
 			}
 
 			for(AnnotationMirror anno: left.getAnnotations()){
-				// if the right side is a literal we do some special stuff(specifically for 1)
-				if(rightExpr.getKind() == Tree.Kind.INT_LITERAL && (int)((LiteralTree)rightExpr).getValue() == 1){
-					if(hierarchy.isSubtypeRelaxed(anno, IndexOrLow)){
-						type.removeAnnotation(anno);
-						String value = IndexVisitor.getIndexValue(anno, getValueMethod(anno));
-						type.addAnnotation(createIndexOrHighAnnotation(value));						
+				// if the right side is a literal we do some special stuff(specifically for 1 an d0)
+				if(rightExpr.getKind() == Tree.Kind.INT_LITERAL){
+					int val = (int)((LiteralTree)rightExpr).getValue();
+					if(val == 1){
+						if(hierarchy.isSubtypeRelaxed(anno, IndexOrLow)){
+							type.removeAnnotation(anno);
+							String value = IndexVisitor.getIndexValue(anno, getValueMethod(anno));
+							type.addAnnotation(createIndexOrHighAnnotation(value));						
+						}
+						else if(hierarchy.isSubtypeRelaxed(anno, NonNegative)){
+							type.removeAnnotation(anno);
+							type.addAnnotation(createNonNegAnnotation());
+						}
+						else{
+							type.removeAnnotation(anno);
+						}
+						return; 
 					}
-					else if(hierarchy.isSubtypeRelaxed(anno, NonNegative)){
-						type.removeAnnotation(anno);
-						type.addAnnotation(createNonNegAnnotation());
-					}
-					else{
-						type.removeAnnotation(anno);
+					// if we are adding 0 change nothing
+					else if(val == 0){
+						type.addAnnotation(anno);
+						return;
 					}
 				}
 				// anything a subtype of nonneg + subtype nonneg = nonnegative
-				else if(right.hasAnnotationRelaxed(IndexFor) || right.hasAnnotationRelaxed(IndexOrHigh) || right.hasAnnotation(NonNegative)){
+				if(right.hasAnnotationRelaxed(IndexFor) || right.hasAnnotationRelaxed(IndexOrHigh) || right.hasAnnotation(NonNegative)){
 					type.clearAnnotations();
 					if(qualHierarchy.isSubtype(anno, NonNegative)){				
 						type.addAnnotation(createNonNegAnnotation());						
