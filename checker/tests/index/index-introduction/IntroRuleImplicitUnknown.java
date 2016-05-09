@@ -6,7 +6,7 @@ class IntroRuleImplicitIndexOrHigh {
 	
 	void foo() {
 		
-		int v1 = -2; 
+		int v1 = -2;
 		int v2 = -10;
 		int v3 = Integer.MIN_VALUE;
 		float f = (float) -2.0;
