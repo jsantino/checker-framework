@@ -36,9 +36,9 @@ public class IndexTransfer extends CFAbstractTransfer<CFValue, CFStore, IndexTra
 	public TransferResult<CFValue, CFStore> visitFieldAccess(FieldAccessNode node, TransferInput<CFValue, CFStore> in) {
 		TransferResult<CFValue, CFStore> result = super.visitFieldAccess(node, in);
 
-		if(node.getFieldName().equals("length")) {
+		if (node.getFieldName().equals("length")) {
 			String arrName = node.getReceiver().toString();
-			if(arrName.contains(".")) {
+			if (arrName.contains(".")) {
 				String[] objs = arrName.split("\\.");
 				arrName = objs[objs.length -1];
 			}
@@ -63,10 +63,10 @@ public class IndexTransfer extends CFAbstractTransfer<CFValue, CFStore, IndexTra
 		ConditionalTransferResult<CFValue, CFStore> newResult =
 				new ConditionalTransferResult<>(result.getResultValue(), thenStore, elseStore);
 		
-		if(leftType.hasAnnotation(Unknown.class)) {
+		if (leftType.hasAnnotation(Unknown.class)) {
 			UnknownGreaterThan(rec, right, thenStore);
 		}
-		if(leftType.hasAnnotation(IndexOrLow.class)) {
+		if (leftType.hasAnnotation(IndexOrLow.class)) {
 			AnnotationMirror leftAnno = leftType.getAnnotation(IndexOrLow.class);
 			String name = getValue(leftAnno);
 			IndexOrLowGreaterThan(rec, right, thenStore, name);
@@ -87,7 +87,7 @@ public class IndexTransfer extends CFAbstractTransfer<CFValue, CFStore, IndexTra
 		boolean NN = rightType.hasAnnotation(NonNegative.class);
 		boolean IOH = rightType.hasAnnotation(IndexOrHigh.class);
 		boolean IF = rightType.hasAnnotation(IndexFor.class);
-		if(IOL || NN || IOH || IF) {
+		if (IOL || NN || IOH || IF) {
 			AnnotationMirror anno = atypeFactory.createNonNegAnnotation();
 			thenStore.insertValue(rec, anno);
 		}
@@ -96,12 +96,12 @@ public class IndexTransfer extends CFAbstractTransfer<CFValue, CFStore, IndexTra
 	private void IndexOrLowGreaterThan(Receiver rec, Node right, CFStore thenStore, String name) {
 
 		AnnotatedTypeMirror rightType = atypeFactory.getAnnotatedType(right.getTree());
-		for(AnnotationMirror anno: rightType.getAnnotations()) {
+		for (AnnotationMirror anno: rightType.getAnnotations()) {
 			boolean IOL = AnnotationUtils.areSameIgnoringValues(anno, atypeFactory.IndexOrLow);
 			boolean InF = AnnotationUtils.areSameIgnoringValues(anno, atypeFactory.IndexFor);
-			if(IOL || InF) {
+			if (IOL || InF) {
 				String aValue = getValue(anno);
-				if(name.equalsIgnoreCase(aValue)) {
+				if (name.equalsIgnoreCase(aValue)) {
 					thenStore.insertValue(rec, atypeFactory.createIndexForAnnotation(name));
 				}
 			}
