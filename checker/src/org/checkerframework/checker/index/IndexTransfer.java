@@ -60,7 +60,7 @@ public class IndexTransfer extends CFAbstractTransfer<CFValue, CFStore, IndexTra
 		
 		CFStore thenStore = result.getRegularStore();
 		CFStore elseStore = thenStore.copy();
-		ConditionalTransferResult<CFValue, CFStore> newResult = 
+		ConditionalTransferResult<CFValue, CFStore> newResult =
 				new ConditionalTransferResult<>(result.getResultValue(), thenStore, elseStore);
 		
 		if(leftType.hasAnnotation(Unknown.class)){
