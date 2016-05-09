@@ -57,6 +57,17 @@ class TransferAddIndexFor {
 		result = indexOrHigh2;
 	}
 	
+	void add0() { 
+		@IndexFor("arr") int indexFor1 = arr.length-1;
+		@IndexFor("arr") int indexFor2 = arr.length-1;
+		
+		int result = i + 0;
+		
+		// Show result is of type IndexOrHigh
+		indexFor1 = result;
+		result = indexFor2;
+	}
+	
 	void addLTLength(@LTLength("arr") int v) { 
 		@Unknown int unknown1;
 		@Unknown int unknown2 = -10;
