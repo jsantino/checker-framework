@@ -78,8 +78,8 @@ class TransferAddIndexOrLow {
 	}
 	
 	void addNonNegative(@NonNegative int v) {
-		@Unknown int unknown;
-		@NonNegative int unknown = -10;
+		@Unknown int unknown1;
+		@Unknown int unknown2 = -10;
 		
 		int result = v + i;
 		
@@ -88,7 +88,7 @@ class TransferAddIndexOrLow {
 		result = unknown2;
 	}
 
-	void addUnknown(@Unknown int v) { 
+	void addUnknown(@Unknown int v) {
 		@Unknown int unknown1;
 		@Unknown int unknown2 = -10;
 		

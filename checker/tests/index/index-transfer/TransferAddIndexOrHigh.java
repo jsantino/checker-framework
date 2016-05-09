@@ -92,7 +92,7 @@ class TransferAddIndexOrHigh {
 
 	void addUnknown(@Unknown int v) {
 		@Unknown int unknown1;
-		@Unkown int unknown2 = -10;
+		@Unknown int unknown2 = -10;
 		
 		int result = v + i;
 		
