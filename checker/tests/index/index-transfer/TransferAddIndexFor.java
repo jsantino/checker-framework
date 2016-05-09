@@ -61,7 +61,7 @@ class TransferAddIndexFor {
 
 		int result = i + 0;
 		
-		// Show result is of type IndexOrHigh
+		// Show result is of type IndexFor
 		indexFor1 = result;
 		result = indexFor2;
 	}
