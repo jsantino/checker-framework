@@ -60,7 +60,7 @@ public class NonNegAnnotatedTypeFactory extends GenericAnnotatedTypeFactory<CFVa
     protected NonNegAnalysis createFlowAnalysis(List<Pair<VariableElement, CFValue>> fieldvalues){
     	return new NonNegAnalysis(checker, this, fieldvalues);
     }
-    
+
 	private class NonNegTreeAnnotator extends TreeAnnotator {
 
 		public NonNegTreeAnnotator(AnnotatedTypeFactory atypeFactory) {
