@@ -11,7 +11,7 @@ class TransferAdd1 {
 	int[] arr = new int[5];
 	int[] arrB = new int[5];
 	
-	int i = 1
+	int i = 1;
 	
 	void addIndexFor(@IndexFor("arr") int v, @IndexOrHigh("arr") int indexOrHigh1, @IndexOrHigh("arr") int indexOrHigh2) {
 		
