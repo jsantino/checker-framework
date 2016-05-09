@@ -11,11 +11,9 @@ class TransferAdd1 {
 	int[] arr = new int[5];
 	int[] arrB = new int[5];
 	
-	int i = 1;
-	
 	void addIndexFor(@IndexFor("arr") int v, @IndexOrHigh("arr") int indexOrHigh1, @IndexOrHigh("arr") int indexOrHigh2) {
 		
-		int result = v + i;
+		int result = 1 + v;
 		
 		// Show result is of type IndexOrHigh
 		indexOrHigh1 = result;
@@ -24,7 +22,7 @@ class TransferAdd1 {
 
 	void addIndexOrLow(@IndexOrLow("arr") int v, @IndexOrHigh("arr") int indexOrHigh1, @IndexOrHigh("arr") int indexOrHigh2) {
 		
-		int result = v + i;
+		int result = 1 + v;
 		
 		// Show result is of type Unknown
 		indexOrHigh1 = result;
@@ -35,7 +33,7 @@ class TransferAdd1 {
 		@NonNegative int nn1 = 10;
 		@NonNegative int nn2 = 10;
 		
-		int result = v + i;
+		int result = 1 + v;
 		
 		// Show result is of type NonNegative
 		nn1 = result;
@@ -46,7 +44,7 @@ class TransferAdd1 {
 		@NonNegative int nn1;
 		@NonNegative int nn2 = 10;
 		
-		int result = i + 1;
+		int result = 1 + 1;
 		
 		// Show result is of type NonNegative
 		nn1 = result;
@@ -57,7 +55,7 @@ class TransferAdd1 {
 		@NonNegative int nn1;
 		@NonNegative int nn2 = 10;
 		
-		int result = i + 0;
+		int result = 1 + 0;
 		
 		// Show result is of type NonNegative
 		nn1 = result;
@@ -68,7 +66,7 @@ class TransferAdd1 {
 		@Unknown int unknown1;
 		@Unknown int unknown2 = -10;
 		
-		int result = v + i;
+		int result = 1 + v;
 		
 		// Show result is of type Unknown
 		unknown1 = result;
@@ -79,7 +77,7 @@ class TransferAdd1 {
 		@NonNegative int nn1 = 10;
 		@NonNegative int nn2 = 10;
 		
-		int result = v + i;
+		int result = 1 + v;
 		
 		// Show result is of type NonNegative
 		nn1 = result;
@@ -90,7 +88,7 @@ class TransferAdd1 {
 		@Unknown int unknown1;
 		@Unknown int unknown2 = -10;
 		
-		int result = v + i;
+		int result = 1 + v;
 		
 		// Show result is of type Unknown
 		unknown1 = result;
