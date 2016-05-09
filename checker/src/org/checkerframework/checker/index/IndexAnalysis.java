@@ -23,7 +23,7 @@ public class IndexAnalysis extends CFAbstractAnalysis<CFValue, CFStore, IndexTra
 	}
 	
 	@Override
-	public IndexTransfer createTransferFunction(){
+	public IndexTransfer createTransferFunction() {
 		return new IndexTransfer(this);
 	}
 	

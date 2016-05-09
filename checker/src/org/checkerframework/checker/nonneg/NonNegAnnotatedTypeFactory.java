@@ -42,7 +42,7 @@ public class NonNegAnnotatedTypeFactory extends GenericAnnotatedTypeFactory<CFVa
 		return builder.build();
 	}
 	//returns a new @Unknown annotation
-	AnnotationMirror createUnknownAnnotation(){
+	AnnotationMirror createUnknownAnnotation() {
 		AnnotationBuilder builder = new AnnotationBuilder(processingEnv, Unknown.class);
 		return builder.build();
 	}
@@ -57,7 +57,7 @@ public class NonNegAnnotatedTypeFactory extends GenericAnnotatedTypeFactory<CFVa
     }
 	
     @Override
-    protected NonNegAnalysis createFlowAnalysis(List<Pair<VariableElement, CFValue>> fieldvalues){
+    protected NonNegAnalysis createFlowAnalysis(List<Pair<VariableElement, CFValue>> fieldvalues) {
     	return new NonNegAnalysis(checker, this, fieldvalues);
     }
 
@@ -82,8 +82,8 @@ public class NonNegAnnotatedTypeFactory extends GenericAnnotatedTypeFactory<CFVa
 		}
 		
 		@Override
-		public Void visitBinary(BinaryTree tree, AnnotatedTypeMirror type){
-			switch (tree.getKind()){
+		public Void visitBinary(BinaryTree tree, AnnotatedTypeMirror type) {
+			switch (tree.getKind()) {
 			case MINUS:
 				type.clearAnnotations();
 				type.addAnnotation(createUnknownAnnotation());

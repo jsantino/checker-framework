@@ -54,14 +54,14 @@ public class NonNegTransfer extends CFAbstractTransfer<CFValue, CFStore, NonNegT
 			// we only refine if the right side is @NonNegative so check that
 			Node right = node.getRightOperand();
 			AnnotatedTypeMirror operand = atypeFactory.getAnnotatedType(right.getTree());
-			if(operand.hasAnnotation(NonNegative.class)) {
+			if (operand.hasAnnotation(NonNegative.class)) {
 				// create the @NonNegative annotation and put it in the then branch
 				AnnotationMirror anno = atypeFactory.createNonNegAnnotation();
 				thenStore.insertValue(leftHand, anno);
 				return newResult;
 			}
 		}
-		catch(ClassCastException e) {
+		catch (ClassCastException e) {
 		}
 		// if we don't refine on the conditional just return what the super gave us
 		return result;
@@ -89,7 +89,7 @@ public class NonNegTransfer extends CFAbstractTransfer<CFValue, CFStore, NonNegT
 				ValueLiteralNode v = (ValueLiteralNode) right;
 				rightIsNeg1 = ((int)v.getValue() == -1);
 			}
-			catch(ClassCastException e) {
+			catch (ClassCastException e) {
 				
 			}
 			if (operand.hasAnnotation(NonNegative.class) || rightIsNeg1) {				
@@ -98,7 +98,7 @@ public class NonNegTransfer extends CFAbstractTransfer<CFValue, CFStore, NonNegT
 				return newResult;
 			}
 		}
-		catch(ClassCastException e) {
+		catch (ClassCastException e) {
 			
 		}
 		return result;

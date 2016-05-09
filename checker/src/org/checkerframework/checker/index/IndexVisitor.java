@@ -42,22 +42,22 @@ public class IndexVisitor extends BaseTypeVisitor<IndexAnnotatedTypeFactory> {
 			checker.report(Result.warning("Potentially unsafe array access: only use @IndexFor as index. Found: " + indexType.toString()), index);
 		}
 		// warn if it is IndexFor nut not the right array
-		else if(!(getIndexValue(indexType.getAnnotation(IndexFor.class), IndexValueElement).equals(name))){
+		else if(!(getIndexValue(indexType.getAnnotation(IndexFor.class), IndexValueElement).equals(name))) {
 			checker.report(Result.warning("Potentially unsafe array access: only use IndexFor("+ name +") index. Found: " + indexType.toString()), index);
 		}
 		return super.visitArrayAccess(tree, type);
 	}
 	@Override
-	public Void visitMethodInvocation(MethodInvocationTree tree, Void type){
+	public Void visitMethodInvocation(MethodInvocationTree tree, Void type) {
 		String name = tree.getMethodSelect().toString();
-		if(TreeUtils.isMethodInvocation(tree, ListGet, env)){
+		if(TreeUtils.isMethodInvocation(tree, ListGet, env)) {
 			ExpressionTree index = tree.getArguments().get(0);
 			String listName = name.split("\\.")[0];
 			AnnotatedTypeMirror indexType = atypeFactory.getAnnotatedType(index);
-			if(!indexType.hasAnnotation(IndexFor.class)){
+			if(!indexType.hasAnnotation(IndexFor.class)) {
 				checker.report(Result.warning("potentially unsafe list access: only use @IndexFor as index.  Found: " + indexType.toString()), index);
 			}
-			else if(!(getIndexValue(indexType.getAnnotation(IndexFor.class), IndexValueElement).equals(listName))){
+			else if(!(getIndexValue(indexType.getAnnotation(IndexFor.class), IndexValueElement).equals(listName))) {
 				checker.report(Result.warning("Potentially unsafe list access: only use IndexFor("+ listName +") index.  Found: " + indexType.toString()), index);
 			}
 			
