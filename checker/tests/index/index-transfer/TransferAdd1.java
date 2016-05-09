@@ -51,7 +51,7 @@ class TransferAdd1 {
 		result = nn2;
 	}
 	
-	void add0(@IndexFor() {
+	void add0() {
 		@NonNegative int nn1;
 		@NonNegative int nn2 = 10;
 		
