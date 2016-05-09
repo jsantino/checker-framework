@@ -160,7 +160,7 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 						else{
 							type.removeAnnotation(anno);
 						}
-						return; 
+						return;
 					}
 					// if we are adding 0 change nothing
 					else if(val == 0){
