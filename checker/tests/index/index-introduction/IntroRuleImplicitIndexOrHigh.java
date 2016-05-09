@@ -8,7 +8,7 @@ class IntroRuleImplicitIndexOrHigh {
 	
 	void foo() {
 		int[] arrB = new int[5];
-		int v1 = 0; 
+		int v1 = 0;
 		int v2 = arr.length;
 		
 		// Idea: prove type of variable v by assigning it to a variable of type t and assigning a variable of type t to v
