@@ -11,6 +11,8 @@ class TransferAddIndexFor {
 	int[] arr = new int[5];
 	int[] arrB = new int[5];
 	
+	// This error can be suppressed
+	//:: error: (assignment.type.incompatible)
 	@IndexFor("arr") int i = 2;
 	
 	void addIndexFor(@IndexFor("arr") int v) { 
@@ -46,9 +48,7 @@ class TransferAddIndexFor {
 		result = nn2;
 	}
 	
-	void add1() { 
-		@IndexOrHigh int indexOrHigh1 = arr.length;
-		@IndexOrHigh int indexOrHigh2 = arr.length;
+	void add1(@IndexOrHigh("arr") int indexOrHigh1, @IndexOrHigh("arr") int indexOrHigh2) { 
 		
 		int result = i + 1;
 		
@@ -57,10 +57,8 @@ class TransferAddIndexFor {
 		result = indexOrHigh2;
 	}
 	
-	void add0() { 
-		@IndexFor("arr") int indexFor1 = arr.length-1;
-		@IndexFor("arr") int indexFor2 = arr.length-1;
-		
+	void add0(@IndexFor("arr") int indexFor1, @IndexFor("arr") int indexFor2) { 
+
 		int result = i + 0;
 		
 		// Show result is of type IndexOrHigh
