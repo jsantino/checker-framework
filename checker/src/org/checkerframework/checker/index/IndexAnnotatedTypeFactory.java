@@ -171,8 +171,8 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 				// anything a subtype of nonneg + subtype nonneg = nonnegative
 				if (right.hasAnnotationRelaxed(IndexFor) || right.hasAnnotationRelaxed(IndexOrHigh) || right.hasAnnotation(NonNegative)) {
 					type.clearAnnotations();
-					if (qualHierarchy.isSubtype(anno, NonNegative)) {				
-						type.addAnnotation(createNonNegAnnotation());						
+					if (hierarchy.isSubtypeRelaxed(anno, NonNegative)) {				
+						type.addAnnotation(createNonNegAnnotation());
 					}
 					else {
 						type.addAnnotation(createUnknownAnnotation());
@@ -202,8 +202,8 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 							String value = IndexVisitor.getIndexValue(anno, getValueMethod(anno));
 							type.addAnnotation(createIndexOrLowAnnotation(value));						
 						}
-						// if left subtype NN
-						else if (hierarchy.isSubtypeRelaxed(anno, NonNegative)) {
+						// if left subtype LTLength
+						else if (hierarchy.isSubtypeRelaxed(anno, LTLength)) {
 							type.removeAnnotation(anno);
 							String value = IndexVisitor.getIndexValue(anno, getValueMethod(anno));
 							type.addAnnotation(createLTLengthAnnotation(value));	
@@ -220,7 +220,7 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 				}
 				// if right is sub of NonNeg
 				if (right.hasAnnotationRelaxed(IndexFor) || right.hasAnnotationRelaxed(IndexOrHigh) || right.hasAnnotation(NonNegative)) {
-					if (!hierarchy.isSubtypeRelaxed(anno, LTLength)) {
+					if (hierarchy.isSubtypeRelaxed(anno, LTLength)) {
 						type.removeAnnotation(anno);
 						String value = IndexVisitor.getIndexValue(anno, getValueMethod(anno));
 						type.addAnnotation(createLTLengthAnnotation(value));
