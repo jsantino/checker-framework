@@ -118,7 +118,7 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 			switch (tree.getKind()) {
 			// call both directions for commutativity
 			case PLUS:
-				visitPlus(left, right, type);
+				visitPlus(left, right, type, true);
 				break;
 			case MINUS:
 				visitMinus(left, right, type);
@@ -130,15 +130,15 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 		}
 
 		// do addition between types
-		public void visitPlus(ExpressionTree leftExpr, ExpressionTree rightExpr, AnnotatedTypeMirror type) {
+		public void visitPlus(ExpressionTree leftExpr, ExpressionTree rightExpr, AnnotatedTypeMirror type, boolean first) {
 			IndexQualifierHierarchy hierarchy = (IndexQualifierHierarchy) qualHierarchy;
 			AnnotatedTypeMirror left = getAnnotatedType(leftExpr);
 			AnnotatedTypeMirror right = getAnnotatedType(rightExpr);
 			// if left is literal 1/0 swap sides because we can handle that.
-			if (leftExpr.getKind() == Tree.Kind.INT_LITERAL) {
+			if (leftExpr.getKind() == Tree.Kind.INT_LITERAL && first) {
 				int val = (int)((LiteralTree)leftExpr).getValue();
 				if (val == 1 || val == 0) {
-					visitPlus(rightExpr, leftExpr, type);
+					visitPlus(rightExpr, leftExpr, type, false);
 					return;
 				}
 			}
