@@ -12,6 +12,7 @@ import org.checkerframework.dataflow.analysis.TransferInput;
 import org.checkerframework.dataflow.analysis.TransferResult;
 import org.checkerframework.dataflow.cfg.node.FieldAccessNode;
 import org.checkerframework.dataflow.cfg.node.GreaterThanNode;
+import org.checkerframework.dataflow.cfg.node.GreaterThanOrEqualNode;
 import org.checkerframework.dataflow.cfg.node.LocalVariableNode;
 import org.checkerframework.dataflow.cfg.node.Node;
 import org.checkerframework.framework.flow.CFAbstractTransfer;
@@ -49,7 +50,10 @@ public class IndexTransfer extends CFAbstractTransfer<CFValue, CFStore, IndexTra
 
 		return result;
 	}
-
+	
+	//******************************************************//
+	// these are methods that handle refining on comparisons//
+	//******************************************************//
 	@Override
 	public TransferResult<CFValue, CFStore> visitGreaterThan(GreaterThanNode node, TransferInput<CFValue, CFStore> in) {
 		TransferResult<CFValue, CFStore> result = super.visitGreaterThan(node, in);
@@ -71,8 +75,42 @@ public class IndexTransfer extends CFAbstractTransfer<CFValue, CFStore, IndexTra
 			String name = getValue(leftAnno);
 			IndexOrLowGreaterThan(rec, right, thenStore, name);
 		}
-
-
+		if (leftType.hasAnnotation(LTLength.class)) {
+			AnnotationMirror leftAnno = leftType.getAnnotation(LTLength.class);
+			String name = getValue(leftAnno);
+			// we can use this method because it refines the same
+			IndexOrLowGreaterThan(rec, right, thenStore, name);
+		}
+		return newResult;
+	}
+	
+	@Override
+	public TransferResult<CFValue, CFStore> visitGreaterThanOrEqual(GreaterThanOrEqualNode node, TransferInput<CFValue, CFStore> in) {
+		TransferResult<CFValue, CFStore> result = super.visitGreaterThanOrEqual(node, in);
+		Node left = node.getLeftOperand();
+		Node right = node.getRightOperand();
+		Receiver rec = FlowExpressions.internalReprOf(analysis.getTypeFactory(), left);
+		AnnotatedTypeMirror leftType = atypeFactory.getAnnotatedType(left.getTree());
+		
+		CFStore thenStore = result.getRegularStore();
+		CFStore elseStore = thenStore.copy();
+		ConditionalTransferResult<CFValue, CFStore> newResult =
+				new ConditionalTransferResult<>(result.getResultValue(), thenStore, elseStore);
+		
+		if (leftType.hasAnnotation(Unknown.class)) {
+			UnknownGreaterThanOrEqual(rec, right, thenStore);
+		}
+		if (leftType.hasAnnotation(IndexOrLow.class)) {
+			AnnotationMirror leftAnno = leftType.getAnnotation(IndexOrLow.class);
+			String name = getValue(leftAnno);
+			IndexOrLowGreaterThanOrEqual(rec, right, thenStore, name);
+		}
+		if (leftType.hasAnnotation(LTLength.class)) {
+			AnnotationMirror leftAnno = leftType.getAnnotation(LTLength.class);
+			String name = getValue(leftAnno);
+			// we can use this method because it refines the same
+			IndexOrLowGreaterThanOrEqual(rec, right, thenStore, name);
+		}
 		return newResult;
 	}
 
@@ -98,8 +136,10 @@ public class IndexTransfer extends CFAbstractTransfer<CFValue, CFStore, IndexTra
 		AnnotatedTypeMirror rightType = atypeFactory.getAnnotatedType(right.getTree());
 		for (AnnotationMirror anno: rightType.getAnnotations()) {
 			boolean IOL = AnnotationUtils.areSameIgnoringValues(anno, atypeFactory.IndexOrLow);
+			boolean NN = rightType.hasAnnotation(NonNegative.class);
+			boolean IOH = rightType.hasAnnotation(IndexOrHigh.class);
 			boolean InF = AnnotationUtils.areSameIgnoringValues(anno, atypeFactory.IndexFor);
-			if (IOL || InF) {
+			if (IOL || InF || NN || IOH) {
 				String aValue = getValue(anno);
 				if (name.equalsIgnoreCase(aValue)) {
 					thenStore.insertValue(rec, atypeFactory.createIndexForAnnotation(name));
@@ -107,6 +147,38 @@ public class IndexTransfer extends CFAbstractTransfer<CFValue, CFStore, IndexTra
 			}
 		}
 	}
+	
+	//*******************************************************************************************//
+		// these are methods for GreaterThanOrEqual Nodes once left operand Annotation is known  //
+		//***************************************************************************************//
+		// this returns a transfer result for @Unknown > x
+		private void UnknownGreaterThanOrEqual(Receiver rec, Node right, CFStore thenStore) {
+			AnnotatedTypeMirror rightType = atypeFactory.getAnnotatedType(right.getTree());
+			// booleans to see if the type is any in the heirarchy we want to refine
+			boolean NN = rightType.hasAnnotation(NonNegative.class);
+			boolean IOH = rightType.hasAnnotation(IndexOrHigh.class);
+			boolean IF = rightType.hasAnnotation(IndexFor.class);
+			if (NN || IOH || IF) {
+				AnnotationMirror anno = atypeFactory.createNonNegAnnotation();
+				thenStore.insertValue(rec, anno);
+			}
+		}
+		
+		private void IndexOrLowGreaterThanOrEqual(Receiver rec, Node right, CFStore thenStore, String name) {
+
+			AnnotatedTypeMirror rightType = atypeFactory.getAnnotatedType(right.getTree());
+			for (AnnotationMirror anno: rightType.getAnnotations()) {
+				boolean InF = AnnotationUtils.areSameIgnoringValues(anno, atypeFactory.IndexFor);
+				boolean NN = rightType.hasAnnotation(NonNegative.class);
+				boolean IOH = rightType.hasAnnotation(IndexOrHigh.class);
+				if (InF || NN || IOH) {
+					String aValue = getValue(anno);
+					if (name.equalsIgnoreCase(aValue)) {
+						thenStore.insertValue(rec, atypeFactory.createIndexForAnnotation(name));
+					}
+				}
+			}
+		}
 
 	// uses a helper method in the visitor and the factory to get the value of the annotation
 	public String getValue(AnnotationMirror anno) {
