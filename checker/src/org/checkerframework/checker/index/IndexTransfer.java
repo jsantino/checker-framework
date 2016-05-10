@@ -15,11 +15,15 @@ import org.checkerframework.dataflow.cfg.node.GreaterThanNode;
 import org.checkerframework.dataflow.cfg.node.GreaterThanOrEqualNode;
 import org.checkerframework.dataflow.cfg.node.LocalVariableNode;
 import org.checkerframework.dataflow.cfg.node.Node;
+import org.checkerframework.dataflow.cfg.node.NotEqualNode;
 import org.checkerframework.framework.flow.CFAbstractTransfer;
 import org.checkerframework.framework.flow.CFStore;
 import org.checkerframework.framework.flow.CFValue;
 import org.checkerframework.framework.type.AnnotatedTypeMirror;
 import org.checkerframework.javacutil.AnnotationUtils;
+
+import com.sun.source.tree.LiteralTree;
+import com.sun.source.tree.Tree;
 
 
 public class IndexTransfer extends CFAbstractTransfer<CFValue, CFStore, IndexTransfer> {
@@ -110,6 +114,44 @@ public class IndexTransfer extends CFAbstractTransfer<CFValue, CFStore, IndexTra
 			String name = getValue(leftAnno);
 			// we can use this method because it refines the same
 			IndexOrLowGreaterThanOrEqual(rec, right, thenStore, name);
+		}
+		return newResult;
+	}
+	
+	@Override
+	public TransferResult<CFValue, CFStore> visitNotEqual(NotEqualNode node, TransferInput<CFValue, CFStore> in) {
+		TransferResult<CFValue, CFStore> result = super.visitNotEqual(node, in);
+		Node left = node.getLeftOperand();
+		Node right = node.getRightOperand();
+		Receiver rec = FlowExpressions.internalReprOf(analysis.getTypeFactory(), left);
+		AnnotatedTypeMirror leftType = atypeFactory.getAnnotatedType(left.getTree());
+		CFStore thenStore = result.getRegularStore();
+		CFStore elseStore = thenStore.copy();
+		ConditionalTransferResult<CFValue, CFStore> newResult =
+				new ConditionalTransferResult<>(result.getResultValue(), thenStore, elseStore);
+
+		if (leftType.hasAnnotation(IndexOrHigh.class)) {
+			if (right instanceof FieldAccessNode) {
+				FieldAccessNode FANode = (FieldAccessNode) right;
+				if (FANode.getFieldName().equals("length")) {
+					String arrName = FANode.getReceiver().toString();
+					if (arrName.contains(".")) {
+						String[] objs = arrName.split("\\.");
+						arrName = objs[objs.length -1];
+					}
+					AnnotationMirror anno = atypeFactory.createIndexForAnnotation(arrName);
+					thenStore.insertValue(rec, anno);
+				}
+			}
+
+		}
+		else if (leftType.hasAnnotation(IndexOrLow.class)) {
+			AnnotationMirror leftAnno = leftType.getAnnotation(IndexOrLow.class);
+			String name = getValue(leftAnno);
+			if (right.getTree().getKind().equals(Tree.Kind.INT_LITERAL) && (int)((LiteralTree)right.getTree()).getValue() == -1) {
+				AnnotationMirror anno = atypeFactory.createIndexForAnnotation(name);
+				thenStore.insertValue(rec, anno);
+			}
 		}
 		return newResult;
 	}
