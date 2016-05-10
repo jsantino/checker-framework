@@ -15,7 +15,7 @@ class TransferSubIndexFor {
 	//:: error: (assignment.type.incompatible)
 	@IndexFor("arr") int i = 2;
 	
-	void subIndexFor(@IndexFor("arr") int v, @LTLength("arr") int lTLength1, @LTLength("arr") int lTLength2) {
+	void subIndexFor(@IndexFor("arr") int v, @LTLength("arr") int LTLength1, @LTLength("arr") int LTLength2) {
 		
 		int result = v - i;
 		
@@ -35,11 +35,13 @@ class TransferSubIndexFor {
 		result = unknown2;
 	}
 	
+	// not a valid Transfer, ex. v = a.length and i = 0; v is not < length;
 	void subIndexOrHigh(@IndexOrHigh("arr") int v, @LTLength("arr") int lTLength1, @LTLength("arr") int lTLength2) {
 		
 		int result = v - i;
 		
 		// Show result is of type LTLength
+		//:: error: (assignment.type.incompatible)
 		lTLength1 = result;
 		result = lTLength2;
 	}
@@ -72,12 +74,13 @@ class TransferSubIndexFor {
 		unknown1 = result;
 		result = unknown2;
 	}
-	
+	// ex. v = 2* a.length and i = 0, v is not < length
 	void subNonNegative(@NonNegative int v, @LTLength("arr") int lTLength1, @LTLength("arr") int lTLength2) {
 		
 		int result = v - i;
 		
 		// Show result is of type LTLength
+		//:: error: (assignment.type.incompatible)
 		lTLength1 = result;
 		result = lTLength2;
 	}
@@ -92,12 +95,13 @@ class TransferSubIndexFor {
 		unknown1 = result;
 		result = unknown2;
 	}
-
+	// not valid transfer, different arrays are different bounds
 	void subIndexForB(@IndexFor("arrB") int v, @LTLength("arr") int lTLength1, @LTLength("arr") int lTLength2) {
 		
 		int result = v - i;
 		
 		// Show result is of type LTLength
+		//:: error: (assignment.type.incompatible)
 		lTLength1 = result;
 		result = lTLength2;
 	}
@@ -118,6 +122,7 @@ class TransferSubIndexFor {
 		int result = v - i;
 		
 		// Show result is of type LTLength
+		//:: error: (assignment.type.incompatible)
 		lTLength1 = result;
 		result = lTLength2;
 	}

@@ -12,7 +12,7 @@ class TransferAddNonNegative {
 	int[] arrB = new int[5];
 	
 	// The NonNegative variable.
-	int i = 2;
+	@NonNegative int i = 2;
 	
 	void addIndexFor(@IndexFor("arr") int v) {
 		@NonNegative int nn1 = 10;
