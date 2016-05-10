@@ -148,7 +148,7 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 				if (rightExpr.getKind() == Tree.Kind.INT_LITERAL) {
 					int val = (int)((LiteralTree)rightExpr).getValue();
 					if (val == 1) {
-						if(hierarchy.isSubtypeRelaxed(anno, IndexOrLow)) {
+						if (hierarchy.isSubtypeRelaxed(anno, IndexOrLow)) {
 							type.removeAnnotation(anno);
 							String value = IndexVisitor.getIndexValue(anno, getValueMethod(anno));
 							type.addAnnotation(createIndexOrHighAnnotation(value));						
