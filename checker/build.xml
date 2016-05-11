@@ -994,7 +994,7 @@
       <get
         src="https://adopt-openjdk.ci.cloudbees.com/view/OpenJDK/job/jtreg/lastSuccessfulBuild/artifact/jtreg-4.2-b02.tar.gz"
         dest="${jtreg.home}/.." />
-      <untar src="${jtreg.home}/../jtreg-4.1-b12.tar.gz"
+      <untar src="${jtreg.home}/../jtreg-4.2-b02.tar.gz"
         dest="${jtreg.home}/../"
         compression="gzip" />
     </target>
