@@ -535,7 +535,7 @@
 
     <target name="-jtreg.download" depends="jtreg.check" unless="jtreg.exists">
       <get
-        src="http://types.cs.washington.edu/checker-framework/jtreg-4.1-b12.tar.gz" 
+        src="http://types.cs.washington.edu/checker-framework/jtreg-4.1-b12.tar.gz"
         dest="${jtreg.home}/.." />
       <untar src="${jtreg.home}/../jtreg-4.1-b12.tar.gz"
         dest="${jtreg.home}/../"
