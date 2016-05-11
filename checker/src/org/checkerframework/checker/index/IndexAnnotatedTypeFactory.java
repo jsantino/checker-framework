@@ -126,6 +126,9 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 			default:
 				break;
 			}
+			if (!type.isAnnotatedInHierarchy(IndexFor)) {
+				type.addAnnotation(createUnknownAnnotation());
+			}
 			return super.visitBinary(tree, type);
 		}
 
@@ -170,17 +173,9 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 				}
 				// anything a subtype of nonneg + subtype nonneg = nonnegative
 				if (right.hasAnnotationRelaxed(IndexFor) || right.hasAnnotationRelaxed(IndexOrHigh) || right.hasAnnotation(NonNegative)) {
-					type.clearAnnotations();
-					if (hierarchy.isSubtypeRelaxed(anno, NonNegative)) {				
+					if (hierarchy.isSubtypeRelaxed(anno, NonNegative)) {
 						type.addAnnotation(createNonNegAnnotation());
 					}
-					else {
-						type.addAnnotation(createUnknownAnnotation());
-					}
-				}
-				else {
-					type.clearAnnotations();
-					type.addAnnotation(createUnknownAnnotation());
 				}
 			}
 		}
@@ -198,18 +193,13 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 					if (val == 1) {
 						// if left sub IOH it becomes IOL
 						if (hierarchy.isSubtypeRelaxed(anno, IndexOrHigh)) {
-							type.removeAnnotation(anno);
 							String value = IndexVisitor.getIndexValue(anno, getValueMethod(anno));
 							type.addAnnotation(createIndexOrLowAnnotation(value));						
 						}
 						// if left subtype LTLength
 						else if (hierarchy.isSubtypeRelaxed(anno, LTLength)) {
-							type.removeAnnotation(anno);
 							String value = IndexVisitor.getIndexValue(anno, getValueMethod(anno));
 							type.addAnnotation(createLTLengthAnnotation(value));	
-						}
-						else {
-							type.removeAnnotation(anno);
 						}
 						return;
 					}
@@ -221,16 +211,9 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 				// if right is sub of NonNeg
 				if (right.hasAnnotationRelaxed(IndexFor) || right.hasAnnotationRelaxed(IndexOrHigh) || right.hasAnnotation(NonNegative)) {
 					if (hierarchy.isSubtypeRelaxed(anno, LTLength)) {
-						type.removeAnnotation(anno);
 						String value = IndexVisitor.getIndexValue(anno, getValueMethod(anno));
 						type.addAnnotation(createLTLengthAnnotation(value));
 					}
-					else {
-						type.removeAnnotation(anno);
-					}
-				}
-				else {
-					type.removeAnnotation(anno);
 				}
 			}
 		}
@@ -248,6 +231,9 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 			default:
 				break;
 			}
+			if (!type.isAnnotatedInHierarchy(IndexFor)) {
+				type.addAnnotation(createUnknownAnnotation());
+			}
 			return super.visitUnary(tree, type);
 		}
 
@@ -255,16 +241,11 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 			AnnotatedTypeMirror  ATM = getAnnotatedType(tree.getExpression());
 			for (AnnotationMirror anno: ATM.getAnnotations()) {
 				if (qualHierarchy.isSubtype(anno, IndexOrLow)) {
-					type.removeAnnotation(anno);
 					String value = IndexVisitor.getIndexValue(anno, getValueMethod(anno));
 					type.addAnnotation(createIndexOrHighAnnotation(value));						
 				}
 				else if (qualHierarchy.isSubtype(anno, NonNegative)) {
-					type.removeAnnotation(anno);
 					type.addAnnotation(createNonNegAnnotation());
-				}
-				else {
-					type.removeAnnotation(anno);
 				}
 			}
 		}
@@ -272,17 +253,12 @@ extends GenericAnnotatedTypeFactory<CFValue, CFStore, IndexTransfer, IndexAnalys
 			AnnotatedTypeMirror  ATM = getAnnotatedType(tree.getExpression());
 			for (AnnotationMirror anno: ATM.getAnnotations()) {
 				if (qualHierarchy.isSubtype(anno, IndexOrHigh)) {
-					type.removeAnnotation(anno);
 					String value = IndexVisitor.getIndexValue(anno, getValueMethod(anno));
 					type.addAnnotation(createIndexOrLowAnnotation(value));						
 				}
 				else if (qualHierarchy.isSubtype(anno, NonNegative)) {
-					type.removeAnnotation(anno);
 					String value = IndexVisitor.getIndexValue(anno, getValueMethod(anno));
 					type.addAnnotation(createLTLengthAnnotation(value));
-				}
-				else {
-					type.removeAnnotation(anno);
 				}
 			}
 		}
