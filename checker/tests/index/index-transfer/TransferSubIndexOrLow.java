@@ -15,25 +15,22 @@ class TransferSubIndexOrLow {
 	//:: error: (assignment.type.incompatible)
 	@IndexOrLow("arr") int i = 2;
 	
-	void subIndexFor(@IndexFor("arr") int v, @LTLength("arr") int lTLength1, @LTLength("arr") int lTLength2) {
-		
-		int result = v - i;
-		
+	void subIndexFor(@IndexFor("arr") int v) {
 		// Show result is of type LTLength
-		lTLength1 = result;
-		result = lTLength2;
+		@LTLength("arr") lTLength1 = i - v;
+		//:: error (assignment.type.incompatible)
+		@IndexOrLow("arr") indexOrLow = i - v;
 	}
 
 	void subIndexOrLow(@IndexOrLow("arr") int v) {
-		@Unknown int unknown1;
-		@Unknown int unknown2 = -10;
-		
-		int result = v - i;
-		
 		// Show result is of type Unknown
-		unknown1 = result;
-		result = unknown2;
+		@Unknown int nn1 = v + i;
+		//:: error (assignment.type.incompatible)
+		@NonNegative int nn = v + i;
+		//:: error (assignment.type.incompatible)
+		@LTLength("arr") int lTLength = v + i;
 	}
+	
 	// not valid ie a.length - -1 !< length
 	void subIndexOrHigh(@IndexOrHigh("arr") int v,  @LTLength("arr") int lTLength1, @LTLength("arr") int lTLength2) {
 		
@@ -46,12 +43,10 @@ class TransferSubIndexOrLow {
 	}
 	
 	void sub1(@LTLength("arr") int lTLength1, @LTLength("arr") int lTLength2) {
-		
-		int result = i - 1;
-		
 		// Show result is of type LTLength
-		lTLength1 = result;
-		result = lTLength2;
+				@LTLength("arr") lTLength1 = i - v;
+				//:: error (assignment.type.incompatible)
+				@IndexOrLow("arr") indexOrLow = i - v;
 	}
 	
 	void sub0(@IndexOrLow("arr") int indexOrLow1, @IndexOrLow("arr") int indexOrLow2) {
@@ -64,14 +59,12 @@ class TransferSubIndexOrLow {
 	}
 	
 	void subLTLength(@LTLength("arr") int v) {
-		@Unknown int unknown1;
-		@Unknown int unknown2 = -10;
-		
-		int result = v - i;
-		
 		// Show result is of type Unknown
-		unknown1 = result;
-		result = unknown2;
+		@Unknown int nn1 = v + i;
+		//:: error (assignment.type.incompatible)
+		@NonNegative int nn = v + i;
+		//:: error (assignment.type.incompatible)
+		@LTLength("arr") int lTLength = v + i;
 	}
 	// not valid NN could be larger that length
 	void subNonNegative(@NonNegative int v, @LTLength("arr") int lTLength1, @LTLength("arr") int lTLength2) {
@@ -85,55 +78,43 @@ class TransferSubIndexOrLow {
 	}
 
 	void subUnknown(@Unknown int v) {
-		@Unknown int unknown1;
-		@Unknown int unknown2 = -10;
-		
-		int result = v - i;
-		
 		// Show result is of type Unknown
-		unknown1 = result;
-		result = unknown2;
+		@Unknown int nn1 = v + i;
+		//:: error (assignment.type.incompatible)
+		@NonNegative int nn = v + i;
+		//:: error (assignment.type.incompatible)
+		@LTLength("arr") int lTLength = v + i;
 	}
 	// Not valid, IndexFor - IndexOrLow is unknown
 	void subIndexForB(@IndexFor("arrB") int v,  @LTLength("arr") int lTLength1, @LTLength("arr") int lTLength2) {
-		
-		int result = v - i;
-		
 		// Show result is of type LTLength
-		//:: error: (assignment.type.incompatible)
-		lTLength1 = result;
-		result = lTLength2;
+				@LTLength("arr") lTLength1 = i - v;
+				//:: error (assignment.type.incompatible)
+				@IndexOrLow("arr") indexOrLow = i - v;
 	}
 	
 	void subIndexOrLowB(@IndexOrLow("arrB") int v) {
-		@Unknown int unknown1;
-		@Unknown int unknown2 = -10;
-		
-		int result = v - i;
-		
 		// Show result is of type Unknown
-		unknown1 = result;
-		result = unknown2;
+		@Unknown int nn1 = v + i;
+		//:: error (assignment.type.incompatible)
+		@NonNegative int nn = v + i;
+		//:: error (assignment.type.incompatible)
+		@LTLength("arr") int lTLength = v + i;
 	}
 
 	void subIndexOrHighB(@IndexOrHigh("arrB") int v,  @LTLength("arr") int lTLength1, @LTLength("arr") int lTLength2) {
-		
-		int result = v - i;
-		
 		// Show result is of type LTLength
-		//:: error: (assignment.type.incompatible)
-		lTLength1 = result;
-		result = lTLength2;
+				@LTLength("arr") lTLength1 = i - v;
+				//:: error (assignment.type.incompatible)
+				@IndexOrLow("arr") indexOrLow = i - v;
 	}
 
 	void subLTLengthB(@LTLength("arrB") int v) {
-		@Unknown int unknown1;
-		@Unknown int unknown2 = -10;
-		
-		int result = v - i;
-		
 		// Show result is of type Unknown
-		unknown1 = result;
-		result = unknown2;
+		@Unknown int nn1 = v + i;
+		//:: error (assignment.type.incompatible)
+		@NonNegative int nn = v + i;
+		//:: error (assignment.type.incompatible)
+		@LTLength("arr") int lTLength = v + i;
 	}
 }
