@@ -89,10 +89,10 @@ public class AnnotationClassLoader {
      */
     protected final ProcessingEnvironment processingEnv;
 
-    /** The resource URL of the qual directory of a checker class */
+    // Stores the resource URL of the qual directory of a checker class
     private final URL resourceURL;
 
-    /** The loaded annotation classes */
+    // Stores set of the loaded annotation classes
     private final Set<Class<? extends Annotation>> loadedAnnotations;
 
     /**
@@ -472,7 +472,7 @@ public class AnnotationClassLoader {
      * Gets the set of the loaded annotation classes. Note that the returned set
      * from this method is mutable. This method is intended to be called within
      * {@link AnnotatedTypeFactory#createSupportedTypeQualifiers()
-     * createSupportedTypeQualifiers()} (or its helper methods) to help define
+     * createSupportedTypeQualifiers()} (or it's helper methods) to help define
      * the set of supported qualifiers.
      * {@link AnnotatedTypeFactory#createSupportedTypeQualifiers()
      * createSupportedTypeQualifiers()} must return an immutable set, and it is
@@ -616,7 +616,7 @@ public class AnnotationClassLoader {
      * @param fileExtension a file extension suffix that a file must have to be
      *            considered an annotation file, normally either
      *            {@link #CLASS_SUFFIX} or {@link #JAVA_SUFFIX} is passed in as
-     *            its value.
+     *            it's value.
      * @return a set of strings where each string is the fully qualified class
      *         name of an annotation in the root directory or its
      *         sub-directories
@@ -715,7 +715,7 @@ public class AnnotationClassLoader {
      * Loads a set of annotations indicated by fullyQualifiedAnnoNames.
      *
      * @param fullyQualifiedAnnoNames a set of strings where each string is a single
-     *            annotation class's fully qualified name
+     *            annotation class's fully qualified name.
      * @return a set of loaded annotation classes.
      *
      * @see #loadAnnotationClass(String)
@@ -751,7 +751,7 @@ public class AnnotationClassLoader {
             return true;
         } else {
             // The standard way to see if an annotation is supported is to build
-            // its annotation mirror if there's no problems building the
+            // it's annotation mirror if there's no problems building the
             // mirror, then it is supported
             AnnotationBuilder builder = new AnnotationBuilder(processingEnv, annoClass);
             AnnotationMirror annoMirroResult = builder.build();

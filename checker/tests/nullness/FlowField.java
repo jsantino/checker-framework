@@ -46,12 +46,11 @@ public class FlowField {
 
     void testBitwise(@NonNull FlowField a, @NonNull FlowField b) {
         Object r;
-        if (a.bw != null) {
+        if (a.bw != null)
             if (b.bw != null) {
                 r = a.bw.b;
                 r = b.bw.b;
             }
-        }
         if (a.bw != null && b.bw != null) {
             r = a.bw.b;
             r = b.bw.b;
@@ -59,9 +58,8 @@ public class FlowField {
     }
 
     void testInstanceOf(@NonNull FlowField a) {
-        if (!(a.s instanceof String)) {
+        if (!(a.s instanceof String))
             return;
-        }
         @NonNull String s = a.s;
     }
 

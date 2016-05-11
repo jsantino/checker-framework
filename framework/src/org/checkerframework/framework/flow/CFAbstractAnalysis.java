@@ -91,24 +91,24 @@ public abstract class CFAbstractAnalysis<V extends CFAbstractValue<V>,
     }
 
     /**
-     * @return the transfer function to be used by the analysis
+     * @return The transfer function to be used by the analysis.
      */
     public T createTransferFunction() {
         return atypeFactory.createFlowTransferFunction(this);
     }
 
     /**
-     * @return an empty store of the appropriate type
+     * @return An empty store of the appropriate type.
      */
     public abstract S createEmptyStore(boolean sequentialSemantics);
 
     /**
-     * @return an identical copy of the store {@code s}.
+     * @return An identical copy of the store {@code s}.
      */
     public abstract S createCopiedStore(S s);
 
     /**
-     * @return an abstract value containing the given annotated {@code type}.
+     * @return An abstract value containing the given annotated {@code type}.
      */
     public abstract /*@Nullable*/ V createAbstractValue(AnnotatedTypeMirror type);
 
@@ -167,7 +167,7 @@ public abstract class CFAbstractAnalysis<V extends CFAbstractValue<V>,
             AnnotatedArrayType a = (AnnotatedArrayType) type;
             makeTop(a.getComponentType(), tops);
         } else if (kind == TypeKind.TYPEVAR) {
-            // just set the primary to top, this will override the upper/lower bounds
+            //just set the primary to top, this will override the upper/lower bounds
 
         } else if (kind == TypeKind.WILDCARD) {
             AnnotatedWildcardType a = (AnnotatedWildcardType) type;

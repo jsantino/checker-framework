@@ -12,7 +12,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UnitsRelations {
     /**
-     * @return the UnitsRelations subclass to use
+     * @return The UnitsRelations subclass to use.
      */
     Class<? extends org.checkerframework.checker.units.UnitsRelations> value();
 }

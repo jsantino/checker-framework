@@ -565,9 +565,8 @@ public class ValueAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
                 }
                 i++;
             }
-            if (allLiterals) {
+            if (allLiterals)
                 return new String(bytes);
-            }
             // If any part of the initialize isn't know,
             // the stringval isn't known.
             return null;
@@ -589,9 +588,8 @@ public class ValueAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
                     allLiterals = false;
                 }
             }
-            if (allLiterals) {
+            if (allLiterals)
                 return stringVal;
-            }
             // If any part of the initialize isn't know,
             // the stringval isn't known.
             return null;
@@ -795,9 +793,8 @@ public class ValueAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
                         String fieldName = tree.getIdentifier().toString();
                         value = evalutator.evaluateStaticFieldAccess(classname,
                                 fieldName, tree);
-                        if (value != null) {
+                        if (value != null)
                             type.replaceAnnotation(resultAnnotationHandler(type.getUnderlyingType(), Collections.singletonList(value), tree));
-                        }
                         return null;
                     }
                 }
@@ -846,7 +843,7 @@ public class ValueAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
             Class<?> resultClass = ValueCheckerUtils.getClassFromType(resultType);
 
             // For some reason null is included in the list of values,
-            // so remove it so that it does not cause a NPE elsewhere.
+            // so remove it so that it does not cause a NPE else where.
             results.remove(null);
             if (results.size() == 0) {
                 return UNKNOWNVAL;

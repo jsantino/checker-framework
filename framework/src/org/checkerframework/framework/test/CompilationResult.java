@@ -25,28 +25,28 @@ public class CompilationResult {
     }
 
     /**
-     * @return whether or not compilation succeeded without errors or exceptions
+     * @return Whether or not compilation succeeded without errors or exceptions
      */
     public boolean compiledWithoutError() {
         return compiledWithoutError;
     }
 
     /**
-     * @return all of the output from the compiler
+     * @return All of the output from the compiler
      */
     public String getJavacOutput() {
         return javacOutput;
     }
 
     /**
-     * @return the list of Java files passed to the compiler
+     * @return The list of Java files passed to the compiler
      */
     public Iterable<? extends JavaFileObject> getJavaFileObjects() {
         return javaFileObjects;
     }
 
     /**
-     * @return the diagnostics reported by the compiler
+     * @return The diagnostics reported by the compiler
      */
     public List<Diagnostic<? extends JavaFileObject>> getDiagnostics() {
         return diagnostics;

@@ -6,9 +6,8 @@ public class DefaultFlow {
     void test() {
 
         @Nullable String reader = null;
-        if (reader == null) {
+        if (reader == null)
             return;
-        }
 
         reader.startsWith("hello");
     }

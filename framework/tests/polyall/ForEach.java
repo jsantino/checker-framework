@@ -29,9 +29,8 @@ class ForEach {
     }
 
     Object iterateForEach(Object[] constants) {
-        for (Object constant : constants) {
+        for (Object constant : constants)
             return constant;
-        }
         return null;
     }
 
@@ -76,9 +75,8 @@ class ForEach {
     }
 
     <T extends Object> T giterateForEach(T[] constants) {
-        for (T constant : constants) {
+        for (T constant : constants)
             return constant;
-        }
         return null;
     }
 

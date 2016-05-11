@@ -1,7 +1,8 @@
 #!/bin/sh
-# The Checker Framework contains three identical copies of PluginUtil.java.
-# This script copies one of them overtop the other two.
-# It makes no attempt to synchronize changes made to different copies.
+# In order to avoid unecessary dependencies between the Checker Framework and
+# programs that run the framework (like the Eclipse and Maven plugins) we
+# create identical copeis of PluginUtil.java in these programs.  This
+# script is used to keep the copies synchronized (see also checkPluginUtil.sh)
 
 myDir="`dirname $0`"
 case `uname -s` in

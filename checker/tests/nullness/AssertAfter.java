@@ -38,9 +38,7 @@ public class AssertAfter {
   public void inConditionInTrue() {
     if (setRepNonNull()) {
       value.toString();
-    } else {
-      // nothing to do
-    }
+    } else { }
   }
 
   // skip-test: Come back when working on improved flow

@@ -4,9 +4,8 @@ class FlowSelf {
 
     void test(@Nullable String s) {
 
-        if (s == null) {
+        if (s == null)
             return;
-        }
         //:: warning: (known.nonnull)
         assert s != null;
 

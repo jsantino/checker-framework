@@ -513,9 +513,8 @@ public abstract class WrappedAnnotatedTypeMirror implements ExtendedTypeMirror {
         @Override
         public boolean equals(Object obj) {
             // AnnotatedWildcardType.equals is non-reflexive.  I hate everything.
-            if (obj == null || obj.getClass() != this.getClass()) {
+            if (obj == null || obj.getClass() != this.getClass())
                 return false;
-            }
 
             WrappedAnnotatedWildcardType other = (WrappedAnnotatedWildcardType)obj;
             return (this.extendsBound == null ?

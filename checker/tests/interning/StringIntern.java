@@ -23,9 +23,8 @@ public class StringIntern {
 
         @SuppressWarnings("interning")
         public @Interned Foo intern() {
-            if (!pool.containsKey(this)) {
+            if (!pool.containsKey(this))
                 pool.put(this, (@Interned Foo)this);
-            }
             return pool.get(this);
         }
     }
@@ -56,11 +55,10 @@ public class StringIntern {
     }
 
     public @Interned String emptyString(boolean b) {
-        if (b) {
+        if (b)
             return "";
-        } else {
+        else
             return ("");
-        }
     }
 
 }

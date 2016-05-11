@@ -1,10 +1,11 @@
 package org.checkerframework.checker.lock;
 
 import java.util.List;
-
+import org.checkerframework.javacutil.AnnotationUtils;
 import org.checkerframework.javacutil.InternalUtils;
 import org.checkerframework.javacutil.TreeUtils;
 
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
@@ -12,10 +13,11 @@ import javax.lang.model.type.TypeMirror;
 
 import org.checkerframework.framework.flow.CFAbstractTransfer;
 import org.checkerframework.framework.flow.CFValue;
+import org.checkerframework.checker.lock.qual.LockHeld;
+import org.checkerframework.checker.lock.qual.LockPossiblyHeld;
 
 import com.sun.source.tree.ClassTree;
 import com.sun.source.tree.MethodTree;
-
 import org.checkerframework.dataflow.analysis.FlowExpressions;
 import org.checkerframework.dataflow.analysis.FlowExpressions.Receiver;
 import org.checkerframework.dataflow.analysis.TransferInput;
@@ -28,7 +30,7 @@ import org.checkerframework.dataflow.cfg.node.Node;
 import org.checkerframework.dataflow.cfg.node.SynchronizedNode;
 
 /*
- * LockTransfer handles constructors, initializers, synchronized methods, and synchronized blocks.
+ * LockTransfer handles constructors and synchronized methods and blocks.
  */
 public class LockTransfer extends
     CFAbstractTransfer<CFValue, LockStore, LockTransfer> {
@@ -36,16 +38,18 @@ public class LockTransfer extends
     /** Type-specific version of super.analysis. */
     protected LockAnalysis analysis;
     protected LockChecker checker;
-    private LockAnnotatedTypeFactory atypeFactory;
+
+    /** Annotations of the lock type system. */
+    protected final AnnotationMirror LOCKHELD, LOCKPOSSIBLYHELD;
 
     public LockTransfer(LockAnalysis analysis, LockChecker checker) {
-        // Always run the Lock Checker with -AconcurrentSemantics turned on.
-        super(analysis, true /* useConcurrentSemantics */);
-        // This assignment is needed (even though the super constructor is called) because
-        // LockTransfer.analysis shadows CFAbstractTransfer.analysis,
+        super(analysis);
         this.analysis = analysis;
         this.checker = checker;
-        this.atypeFactory = (LockAnnotatedTypeFactory) analysis.getTypeFactory();
+        LOCKHELD = AnnotationUtils.fromClass(analysis.getTypeFactory()
+                .getElementUtils(), LockHeld.class);
+        LOCKPOSSIBLYHELD = AnnotationUtils.fromClass(analysis.getTypeFactory()
+                .getElementUtils(), LockPossiblyHeld.class);
     }
 
     /**
@@ -53,8 +57,8 @@ public class LockTransfer extends
      */
     protected void makeLockHeld(LockStore store, Node node) {
         Receiver internalRepr = FlowExpressions.internalReprOf(
-                atypeFactory, node);
-        store.insertValue(internalRepr, atypeFactory.LOCKHELD);
+                analysis.getTypeFactory(), node);
+        store.insertValue(internalRepr, LOCKHELD);
     }
 
     /**
@@ -62,12 +66,12 @@ public class LockTransfer extends
      */
     protected void makeLockPossiblyHeld(LockStore store, Node node) {
         Receiver internalRepr = FlowExpressions.internalReprOf(
-                atypeFactory, node);
+                analysis.getTypeFactory(), node);
 
         // insertValue cannot change an annotation to a less
         // specific type (e.g. LockHeld to LockPossiblyHeld),
-        // so insertLockPossiblyHeld is called.
-        store.insertLockPossiblyHeld(internalRepr);
+        // so we call insertExactValue.
+        store.insertExactValue(internalRepr, LOCKPOSSIBLYHELD);
     }
 
     /**
@@ -115,8 +119,8 @@ public class LockTransfer extends
         // about any fields of the current object.
 
         // Furthermore, since the current object already exists,
-        // other objects may be guarded by the current object. So
-        // a synchronized method can affect the locking behavior of other
+        // other objects may be @GuardedBy the current object. So
+        // a synchronized method can affect the behavior of other
         // objects.
 
         // A constructor/initializer behaves as if the current object
@@ -124,8 +128,9 @@ public class LockTransfer extends
         // reality no locks are held.
 
         // Furthermore, since the current object is being constructed,
-        // no other object can be guarded by it or any of its non-static
+        // no other object can be @GuardedBy it or any of its non-static
         // fields.
+
 
         // Handle synchronized methods and constructors.
         if (astKind == Kind.METHOD) {
@@ -138,15 +143,13 @@ public class LockTransfer extends
                 final ClassTree classTree = method.getClassTree();
                 TypeMirror classType = InternalUtils.typeOf(classTree);
 
-                if (methodElement.getModifiers().contains(Modifier.STATIC)) {
-                    store.insertValue(new FlowExpressions.ClassName(classType), atypeFactory.LOCKHELD);
-                } else {
-                    store.insertThisValue(atypeFactory.LOCKHELD, classType);
-                }
-            } else if (methodElement.getKind() == ElementKind.CONSTRUCTOR) {
+                store.insertThisValue(LOCKHELD, classType);
+            }
+            else if (methodElement.getKind() == ElementKind.CONSTRUCTOR) {
                 store.setInConstructorOrInitializer();
             }
-        } else if (astKind == Kind.ARBITRARY_CODE) { // Handle initializers
+        }
+        else if (astKind == Kind.ARBITRARY_CODE) { // Handle initializers
             store.setInConstructorOrInitializer();
         }
 
@@ -163,7 +166,8 @@ public class LockTransfer extends
         // Handle the entering and leaving of the synchronized block
         if (n.getIsStartOfBlock()) {
             makeLockHeld(result, n.getExpression());
-        } else {
+        }
+        else {
             makeLockPossiblyHeld(result, n.getExpression());
         }
 

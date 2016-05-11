@@ -749,8 +749,7 @@ public abstract class VoidVisitorAdapter<A> implements VoidVisitor<A> {
 
     @Override
     public void visit(IndexUnit n, A arg) {
-        for (CompilationUnit unit : n.getCompilationUnits()) {
+        for (CompilationUnit unit : n.getCompilationUnits())
             unit.accept(this, arg);
-        }
     }
 }

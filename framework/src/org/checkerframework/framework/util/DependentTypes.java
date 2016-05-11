@@ -65,13 +65,11 @@ public class DependentTypes {
 
     public void doSubsitution(Element symbol, AnnotatedTypeMirror type, AnnotatedTypeMirror receiver) {
         AnnotationMirror dependentInfo = findDependent(symbol);
-        if (dependentInfo == null) {
+        if (dependentInfo == null)
             return;
-        }
 
-        if (receiver == null) {
+        if (receiver == null)
             return;
-        }
 
         AnnotationMirror ifpresent = getWhen(dependentInfo);
         if (receiver.hasAnnotation(ifpresent)) {
@@ -81,16 +79,14 @@ public class DependentTypes {
     }
 
     public void handle(Tree tree, AnnotatedTypeMirror type) {
-        if (!TreeUtils.isExpressionTree(tree)) {
+        if (!TreeUtils.isExpressionTree(tree))
             return;
-        }
         ExpressionTree expr = (ExpressionTree)tree;
         Element symbol = null;
-        if (expr instanceof IdentifierTree) {
+        if (expr instanceof IdentifierTree)
             symbol = TreeUtils.elementFromUse(expr);
-        } else if (expr instanceof MemberSelectTree) {
+        else if (expr instanceof MemberSelectTree)
             symbol = TreeUtils.elementFromUse(expr);
-        }
 
         if (symbol == null
                 || (!symbol.getKind().isField()
@@ -107,9 +103,8 @@ public class DependentTypes {
             receiver = null;
         }
 
-        if (receiver != null) {
+        if (receiver != null)
             doSubsitution(symbol, type, receiver);
-        }
     }
 
     public void handleConstructor(NewClassTree tree, AnnotatedTypeMirror ctr, AnnotatedExecutableType type) {

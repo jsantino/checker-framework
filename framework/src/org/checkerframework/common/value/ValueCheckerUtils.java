@@ -111,7 +111,8 @@ public class ValueCheckerUtils {
             Class<?> newClass) {
         if (newClass == String.class) {
             return Collections.singletonList("null");
-        } else {
+        }
+        else {
             return new ArrayList<>();
         }
     }
@@ -152,9 +153,8 @@ public class ValueCheckerUtils {
             }
             return chars;
         } else if (newClass == Object.class && strings.size() == 1) {
-            if (strings.get(0).equals("null")) {
+            if (strings.get(0).equals("null"))
                 return strings;
-            }
         }
         return strings;
     }

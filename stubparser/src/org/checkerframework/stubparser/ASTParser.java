@@ -542,9 +542,8 @@ final class ASTParser implements ASTParserConstants {
       cit = ClassOrInterfaceType();
                                         ret.add(cit); extendsMoreThanOne = true;
     }
-      if (extendsMoreThanOne && !isInterface) {
+      if (extendsMoreThanOne && !isInterface)
          throwParseException(token, "A class cannot extend more than one other class");
-      }
      {if (true) return ret;}
     throw new Error("Missing return statement in function");
   }
@@ -569,9 +568,8 @@ final class ASTParser implements ASTParserConstants {
       cit = ClassOrInterfaceType();
                                         ret.add(cit);
     }
-      if (isInterface) {
+      if (isInterface)
          throwParseException(token, "An interface cannot implement other interfaces");
-      }
      {if (true) return ret;}
     throw new Error("Missing return statement in function");
   }
@@ -852,9 +850,8 @@ final class ASTParser implements ASTParserConstants {
     pushJavadoc();
     if (jj_2_10(2)) {
       ret = InitializerDeclaration();
-             if (isInterface) {
+             if (isInterface)
                 throwParseException(token, "An interface cannot have initializers");
-             }
     } else {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case ABSTRACT:
@@ -8355,9 +8352,9 @@ final class ASTParser implements ASTParserConstants {
   }
 
   private int jj_ntk() {
-    if ((jj_nt=token.next) == null) {
+    if ((jj_nt=token.next) == null)
       return (jj_ntk = (token.next=token_source.getNextToken()).kind);
-    } else
+    else
       return (jj_ntk = jj_nt.kind);
   }
 

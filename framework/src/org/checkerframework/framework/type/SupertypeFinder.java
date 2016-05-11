@@ -121,9 +121,8 @@ class SupertypeFinder {
                 superPrimitiveType = TypeKind.FLOAT;
             } else if (type.getKind() == TypeKind.SHORT) {
                 superPrimitiveType = TypeKind.INT;
-            } else {
+            } else
                 assert false: "Forgot the primitive " + type;
-            }
 
             if (superPrimitiveType != null) {
                 AnnotatedPrimitiveType superPrimitive = (AnnotatedPrimitiveType)

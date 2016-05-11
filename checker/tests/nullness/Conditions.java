@@ -6,16 +6,14 @@ public class Conditions {
     @Nullable Object f;
 
     void test1(Conditions c) {
-        if (!(c.f!=null)) {
+        if (!(c.f!=null))
             return;
-        }
         c.f.hashCode();
     }
 
     void test2(Conditions c) {
-        if (!(c.f!=null) || 5 > 9) {
+        if (!(c.f!=null) || 5 > 9)
             return;
-        }
         c.f.hashCode();
     }
 
@@ -25,15 +23,13 @@ public class Conditions {
     }
 
     void test1m(Conditions c) {
-        if (!(c.isNN())) {
+        if (!(c.isNN()))
             return;
-        }
         c.f.hashCode();
     }
     void test2m(Conditions c) {
-        if (!(c.isNN()) || 5 > 9) {
+        if (!(c.isNN()) || 5 > 9)
             return;
-        }
         c.f.hashCode();
     }
 }

@@ -88,9 +88,8 @@ public class PersistUtil {
         sb.append(compact);
         sb.append("\n");
 
-        if (isSnippet) {
+        if (isSnippet)
             sb.append("}\n\n");
-        }
 
         return sb.toString();
     }

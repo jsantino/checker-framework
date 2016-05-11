@@ -81,7 +81,7 @@ public class ControlFlowGraph {
     }
 
     /**
-     * @return the {@link Node} to which the {@link Tree} <code>t</code>
+     * @return The {@link Node} to which the {@link Tree} <code>t</code>
      *         corresponds.
      */
     public Node getNodeCorrespondingToTree(Tree t) {
@@ -92,7 +92,7 @@ public class ControlFlowGraph {
         }
     }
 
-    /** @return the entry block of the control flow graph. */
+    /** @return The entry block of the control flow graph. */
     public SpecialBlock getEntryBlock() {
         return entryBlock;
     }
@@ -109,13 +109,13 @@ public class ControlFlowGraph {
         return exceptionalExitBlock;
     }
 
-    /** @return the AST this CFG corresponds to. */
+    /** @return The AST this CFG corresponds to. */
     public UnderlyingAST getUnderlyingAST() {
         return underlyingAST;
     }
 
     /**
-     * @return the set of all basic block in this control flow graph
+     * @return The set of all basic block in this control flow graph.
      */
     public Set<Block> getAllBlocks() {
         Set<Block> visited = new HashSet<>();
@@ -125,9 +125,8 @@ public class ControlFlowGraph {
 
         // traverse the whole control flow graph
         while (true) {
-            if (cur == null) {
+            if (cur == null)
                 break;
-            }
 
             Queue<Block> succs = new LinkedList<>();
             if (cur.getType() == BlockType.CONDITIONAL_BLOCK) {
@@ -163,7 +162,7 @@ public class ControlFlowGraph {
     }
 
     /**
-     * @return the list of all basic block in this control flow graph
+     * @return The list of all basic block in this control flow graph
      * in reversed depth-first postorder sequence.
      *
      * Blocks may appear more than once in the sequence.
@@ -218,7 +217,7 @@ public class ControlFlowGraph {
     }
 
     /**
-     * @return the tree-lookup map
+     * @return The tree-lookup map.
      */
     public IdentityHashMap<Tree, Node> getTreeLookup() {
         return new IdentityHashMap<>(treeLookup);

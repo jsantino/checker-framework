@@ -21,9 +21,8 @@ public class AssertIfTrueTestSimple {
   }
 
   public void addAll(AssertIfTrueTestSimple s) {
-    if (repNulled()) {
+    if (repNulled())
       return;
-    }
     @NonNull Object x = values;
 
     /* TODO skip-tests

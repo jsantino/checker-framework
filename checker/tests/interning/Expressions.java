@@ -23,11 +23,10 @@ public class Expressions {
 
     class Foo {
         public @Interned Foo returnThis(@Interned Foo this, @Interned Foo other) {
-            if (other == this) {
+            if (other == this)
                 return this;
-            } else {
+            else
                 return null;
-            }
         }
     }
 

@@ -29,13 +29,11 @@ import java.util.Set;
  */
 public abstract class SimpleQualifierParameterAnnotationConverter<Q> implements QualifierParameterAnnotationConverter<Q> {
 
-    /**
-     * The default "Target" in an annotation is the primary qualifier.
-     * We can't use null in the annotation, so we use this special value.
-     */
+    // The default "Target" in an annotation is the primary qualifier
+    // We can't use null in the annotation, so we use this special value
     public static final String PRIMARY_TARGET="_primary";
     public static final String TARGET_PARAM_NAME = "param";
-    /** The name of the qualifier parameter to use for polymorphic qualifiers. */
+    // The name of the qualifier parameter to use for polymorphic qualifiers.
     public static final String POLY_NAME = "_poly";
 
     // Annotation field names
@@ -165,7 +163,7 @@ public abstract class SimpleQualifierParameterAnnotationConverter<Q> implements 
             Wildcard<Q> newWild = newParams.get(name);
             Wildcard<Q> combinedWild = oldWild.combineWith(newWild, lowerOp, upperOp);
 
-            // System.err.printf("COMBINE[%s]: %s + %s = %s\n", name, oldWild, newWild, combinedWild);
+            //System.err.printf("COMBINE[%s]: %s + %s = %s\n", name, oldWild, newWild, combinedWild);
             params.put(name, combinedWild);
         }
     }
@@ -300,7 +298,7 @@ public abstract class SimpleQualifierParameterAnnotationConverter<Q> implements 
     }
 
     /**
-     * @return true if type has a polymorphic qualifier
+     * @return true if type has a polymorphic qualifier.
      */
     private boolean hasPolyAnnotation(ExtendedExecutableType type) {
         if (hasPolyAnnotationCheck(type.getReturnType())) {
@@ -318,7 +316,7 @@ public abstract class SimpleQualifierParameterAnnotationConverter<Q> implements 
     }
 
     /**
-     * @return true if type has a polymorphic qualifier
+     * @return true if type has a polymorphic qualifier.
      */
     protected boolean hasPolyAnnotationCheck(ExtendedTypeMirror type) {
         if (type == null) {

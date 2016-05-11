@@ -50,7 +50,7 @@ public class ReflectiveEvalutator {
      *            method has no receiver
      * @param tree
      *            location to report any errors
-     * @return all possible values that the method may return
+     * @return all possible values that the method may return.
      */
     public List<?> evaluteMethodCall(List<List<?>> allArgValues,
             List<?> receiverValues, MethodInvocationTree tree) {
@@ -83,20 +83,18 @@ public class ReflectiveEvalutator {
                 try {
                     results.add(method.invoke(receiver, arguments));
                 } catch (InvocationTargetException e) {
-                    if (reportWarnings) {
+                    if (reportWarnings)
                         checker.report(Result.warning(
                                 "method.evaluation.exception", method, e
                                         .getTargetException().toString()), tree);
-                    }
                     // Method evaluation will always fail, so don't bother
                     // trying again
                     return new ArrayList<Object>();
 
                 } catch (ReflectiveOperationException e) {
-                    if (reportWarnings) {
+                    if (reportWarnings)
                         checker.report(Result.warning(
                                 "method.evaluation.failed", method), tree);
-                    }
 
                 }
             }
@@ -126,12 +124,11 @@ public class ReflectiveEvalutator {
             }
             return method;
         } catch (ClassNotFoundException | UnsupportedClassVersionError e) {
-            if (reportWarnings) {
+            if (reportWarnings)
                 checker.report(
                         Result.warning("class.find.failed", (TreeUtils
                                 .elementFromUse(tree)).getEnclosingElement()),
                         tree);
-            }
             return null;
 
         } catch (NoSuchMethodException e) {
@@ -141,14 +138,12 @@ public class ReflectiveEvalutator {
                     .getEnclosingElement();
 
             if (classElem == null) {
-                if (reportWarnings) {
+                if (reportWarnings)
                     checker.report(Result.warning("method.find.failed"), tree);
-                }
             } else {
-                if (reportWarnings) {
+                if (reportWarnings)
                     checker.report(Result.warning(
                             "method.find.failed.in.class", classElem), tree);
-                }
             }
             return null;
         }
@@ -205,16 +200,14 @@ public class ReflectiveEvalutator {
             return field.get(recClass);
 
         } catch (ClassNotFoundException | UnsupportedClassVersionError e) {
-            if (reportWarnings) {
+            if (reportWarnings)
                 checker.report(Result.warning("class.find.failed", classname),
                         tree);
-            }
             return null;
         } catch (ReflectiveOperationException e) {
-            if (reportWarnings) {
+            if (reportWarnings)
                 checker.report(Result.warning("field.access.failed", fieldName,
                         classname), tree);
-            }
             return null;
         }
     }
@@ -245,21 +238,19 @@ public class ReflectiveEvalutator {
                 try {
                     results.add(constructor.newInstance(arguments));
                 } catch (ReflectiveOperationException e) {
-                    if (reportWarnings) {
+                    if (reportWarnings)
                         checker.report(
                                 Result.warning("constructor.invocation.failed"),
                                 tree);
-                    }
                     return new ArrayList<Object>();
                 }
                 return results;
             }
 
         } catch (ReflectiveOperationException e) {
-            if (reportWarnings) {
+            if (reportWarnings)
                 checker.report(Result.warning("constructor.evaluation.failed"),
                         tree);
-            }
         }
         return new ArrayList<>();
     }

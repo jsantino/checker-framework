@@ -19,7 +19,7 @@
 //    * no action
 // Naming indicates which one; overall 14 tests.
 
-// Empty, to give this file its name.
+// Empty, to give this class its namex
 public class TryFinally {
 
 }

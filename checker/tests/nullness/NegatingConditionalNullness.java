@@ -12,9 +12,8 @@ class PptTopLevel {
     }
 
     static void testPptTopLevel(PptTopLevel ppt) {
-        if (!ppt.has_splitters()) {
+        if (!ppt.has_splitters())
             return;
-        }
         @NonNull Object s2 = ppt.splitters;
     }
 
@@ -42,9 +41,8 @@ class PptTopLevel {
     }
 
     static void testFalseIf(PptTopLevel ppt) {
-        if (ppt.has_splitters()) {
+        if (ppt.has_splitters())
             return;
-        }
         //:: error: (dereference.of.nullable)
         ppt.splitters.toString();   // error
     }

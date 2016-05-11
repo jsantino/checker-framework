@@ -31,11 +31,9 @@ public class Wildcard<Q> {
     }
 
 
-    /**
-     * Force the user to write `Wildcard.empty()` instead of `new Wildcard()`,
-     * to make it clear that they're getting something special, rather than
-     * a normal wildcard with default bounds or something like that.
-     */
+    // Force the user to write `Wildcard.empty()` instead of `new Wildcard()`,
+    // to make it clear that they're getting something special, rather than
+    // a normal wildcard with default bounds or something like that.
     private Wildcard() {
         this.lower = null;
         this.upper = null;

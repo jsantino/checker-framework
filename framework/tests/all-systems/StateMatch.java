@@ -6,9 +6,8 @@ public class StateMatch {
 
     @SuppressWarnings("Interning")
     public boolean state_match (Object state) {
-        if (!(state instanceof double [][])) {
+        if (!(state instanceof double [][]))
             System.out.println ("");
-        }
 
         double[][] e = (double[][]) state;
         boolean match = false;

@@ -4,7 +4,7 @@ class Flow {
 
     public void testIf(String str) {
 
-        // String str = "foo";
+        //String str = "foo";
         @NonNull String a;
         if (str != null) {
            a = str;
@@ -17,11 +17,10 @@ class Flow {
 
     public void testIfNoBlock(String str) {
 
-        // String str = "foo";
+        //String str = "foo";
         @NonNull String a;
-        if (str != null) {
+        if (str != null)
             a = str;
-        }
 
         str = null;
         //:: error: (assignment.type.incompatible)
@@ -30,7 +29,7 @@ class Flow {
 
     public void testElse(String str) {
 
-        // String str = "foo";
+        //String str = "foo";
         @NonNull String a;
         if (str == null) {
             testAssert("");
@@ -45,13 +44,12 @@ class Flow {
 
     public void testElseNoBlock(String str) {
 
-        // String str = "foo";
+        //String str = "foo";
         @NonNull String a;
-        if (str == null) {
+        if (str == null)
             testAssert("");
-        } else {
+        else
             a = str;
-        }
 
         str = null;
         //:: error: (assignment.type.incompatible)
@@ -60,7 +58,7 @@ class Flow {
 
     public void testReturnIf(String str) {
 
-        // String str = "foo";
+        //String str = "foo";
         if (str == null) {
             testAssert("");
             return;
@@ -78,9 +76,8 @@ class Flow {
 //        String str = "foo";
         if (str != null) {
             testAssert("");
-        } else {
+        } else
             return;
-        }
 
         @NonNull String a = str;
 
@@ -91,7 +88,7 @@ class Flow {
 
     public void testThrowIf(String str) {
 
-        // String str = "foo";
+        //String str = "foo";
         if (str == null) {
             testAssert("");
             throw new RuntimeException("foo");
@@ -106,12 +103,11 @@ class Flow {
 
     public void testThrowElse(String str) {
 
-        // String str = "foo";
+        //String str = "foo";
         if (str != null) {
             testAssert("");
-        } else {
+        } else
             throw new RuntimeException("foo");
-        }
 
         @NonNull String a = str;
 
@@ -133,7 +129,7 @@ class Flow {
 
     public void testWhile(String str) {
 
-        // String str = "foo";
+        //String str = "foo";
         while (str != null) {
             @NonNull String a = str;
             break;
@@ -146,7 +142,7 @@ class Flow {
 
     public void testIfInstanceOf(String str) {
 
-        // String str = "foo";
+        //String str = "foo";
         @NonNull String a;
         if (str instanceof String) {
            a = str;
@@ -169,7 +165,7 @@ class Flow {
 
     public void testExit(String str) {
 
-        // String str = null;
+        //String str = null;
         if (str == null) {
             System.exit(0);
         }
