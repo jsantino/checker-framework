@@ -43,7 +43,7 @@ class TransferAdd1 {
 		// Show result is of type NonNegative
 		@NonNegative int nn1 = 1 + 0;
 		//:: error (assignment.type.incompatible)
-		@IndexOrHigh int indexOrHigh = 1 + v;
+		@IndexOrHigh int indexOrHigh = 1 + 0;
 	}
 	
 	void addLTLength(@LTLength("arr") int v) {
