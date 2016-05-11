@@ -5,7 +5,7 @@ import org.checkerframework.checker.index.qual.LTLength;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Unknown;
 
-class TransferAdd1 {
+class TransferAdd0 {
 
 	
 	int[] arr = new int[5];

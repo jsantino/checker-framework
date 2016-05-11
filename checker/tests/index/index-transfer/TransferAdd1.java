@@ -14,60 +14,60 @@ class TransferAdd1 {
 	void addIndexFor(@IndexFor("arr") int v) {
 		// Show result is of type IndexOrHigh
 		@IndexOrHigh("arr") int result = 1 + v;
-        //:: error (assignment.type.incompatible)
-        IndexFor("arr") int indexFor = 1 + v;
+        //:: error: (assignment.type.incompatible)
+        @IndexFor("arr") int indexFor = 1 + v;
 	}
 
 	void addIndexOrLow(@IndexOrLow("arr") int v) {
 		// Show result is of type IndexOrHigh
 		@IndexOrHigh("arr") int result = 1 + v;
-        //:: error (assignment.type.incompatible)
-        IndexFor("arr") int indexFor = 1 + v;
+        //:: error: (assignment.type.incompatible)
+        @IndexFor("arr") int indexFor = 1 + v;
 	}
 	
 	void addIndexOrHigh(@IndexOrHigh("arr") int v) {
 		// Show result is of type NonNegative
 		@NonNegative int nn1 = 1 + v;
-		//:: error (assignment.type.incompatible)
+		//:: error: (assignment.type.incompatible)
 		@IndexOrHigh int indexOrHigh = 1 + v;
 	}
 	
 	void add1() {
 		// Show result is of type NonNegative
 		@NonNegative int nn1 = 1 + 1;
-		//:: error (assignment.type.incompatible)
+		//:: error: (assignment.type.incompatible)
 		@IndexOrHigh int indexOrHigh = 1 + 1;
 	}
 	
 	void add0() {
 		// Show result is of type NonNegative
 		@NonNegative int nn1 = 1 + 0;
-		//:: error (assignment.type.incompatible)
+		//:: error: (assignment.type.incompatible)
 		@IndexOrHigh int indexOrHigh = 1 + 0;
 	}
 	
 	void addLTLength(@LTLength("arr") int v) {
 		// Show result is of type Unknown
 		@Unknown int nn1 = v + 1;
-		//:: error (assignment.type.incompatible)
+		//:: error: (assignment.type.incompatible)
 		@NonNegative int nn = 1 + v;
-		//:: error (assignment.type.incompatible)
+		//:: error: (assignment.type.incompatible)
 		@LTLength("arr") int lTLength = 1 + v;
 	}
 	
 	void addNonNegative(@NonNegative int v) {
 		// Show result is of type NonNegative
 		@NonNegative int nn1 = 1 + v;
-		//:: error (assignment.type.incompatible)
+		//:: error: (assignment.type.incompatible)
 		@IndexOrHigh int indexOrHigh = 1 + v;
 	}exOrHigh
 
 	void addUnknown(@Unknown int v) {
 		// Show result is of type Unknown
 		@Unknown int nn1 = v + 1;
-		//:: error (assignment.type.incompatible)
+		//:: error: (assignment.type.incompatible)
 		@NonNegative int nn = 1 + v;
-		//:: error (assignment.type.incompatible)
+		//:: error: (assignment.type.incompatible)
 		@LTLength("arr") int lTLength = 1 + v;
 	}
 }
