@@ -3,17 +3,14 @@ import org.checkerframework.checker.index.qual.*;
 class IntroRuleNonNegative{
 	
 	void foo() {
-		@NonNegative int v1 = 0;
-		@NonNegative int v2 = 10;
-		//@NonNegative int v3 = Integer.MAX_VALUE;
-		//float f = 0.0;
-		//@NonNegative int v4 = (int) f;
+		@NonNegative int v1 = 1;
+		@NonNegative int v2 = 100;
+		
+		// prove super indexOrHigh
+		//:: error:(assignment.type.incompatible)
+		@IndexOrHigh("") int IoH = v1;
+		//:: error:(assignment.type.incompatible)
+		IoH = v2;
 	}
 	
-	void foo2() {
-		@Unknown int v1 = 0;
-		@Unknown int v2 = 10;
-		@Unknown int v3 = Integer.MAX_VALUE;
-		//@Unknown int v4 = (int) f;
-	}
 }

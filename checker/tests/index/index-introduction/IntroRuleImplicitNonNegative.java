@@ -18,8 +18,10 @@ class IntroRuleImplicitNonNegative {
 		nn1 = v2;
 		
 		// Prove NonNegative is subtype of type of v1,v2
-		v1 = nn2;
-		v2 = nn2;
+		//:: error:(assignment.type.incompatible)
+		@IndexOrHigh() int nn = v1;
+		//:: error:(assignment.type.incompatible)
+		nn = v2;
 		
 	}
 }

@@ -6,6 +6,8 @@ class IntroRuleIndexOrLow{
 	
 	void foo() {
 		@IndexOrLow("") int v1 = -1;
+		//:: error:(assignment.type.incompatible)
+		@IndexFor("") int InF = v1;
 	}
 	
 	void foo2() {

@@ -18,7 +18,9 @@ class IntroRuleImplicitIndexOrHigh {
 		//@IndexOrLow("") int indexOrLow1 = v1;
 		//@IndexOrLow("") int indexOrLow2 = -1;
 		// Prove IndexOrLow is subtype of type of v1
-		v1 = indexOrLow2;
+		//:: error:(assignment.type.incompatible)
+		@IndexFor("arr") int m = v1;
+
 		
 	}
 }
