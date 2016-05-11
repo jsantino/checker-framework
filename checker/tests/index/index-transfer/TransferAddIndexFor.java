@@ -11,38 +11,38 @@ class TransferAddIndexFor {
 	int[] arr = new int[5];
 	int[] arrB = new int[5];
 	
-	// This error can be suppressed
+	// This error: can be suppressed
 	//:: error: (assignment.type.incompatible)
 	@IndexFor("arr") int i = 2;
 	
 	void addIndexFor(@IndexFor("arr") int v) {
 		// Show result is of type NonNegative
 				@NonNegative int nn1 = v + i;
-				//:: error (assignment.type.incompatible)
+				//:: error: (assignment.type.incompatible)
 				@IndexOrHigh int indexOrHigh = v + i;
 	}
 
 	void addIndexOrLow(@IndexOrLow("arr") int v) {
 		// Show result is of type Unknown
 				@Unknown int nn1 = v + i;
-				//:: error (assignment.type.incompatible)
+				//:: error: (assignment.type.incompatible)
 				@NonNegative int nn = v + i;
-				//:: error (assignment.type.incompatible)
+				//:: error: (assignment.type.incompatible)
 				@LTLength("arr") int lTLength = v + i;
 	}
 	
 	void addIndexOrHigh(@IndexOrHigh("arr") int v) {
 		// Show result is of type NonNegative
 				@NonNegative int nn1 = v + i;
-				//:: error (assignment.type.incompatible)
+				//:: error: (assignment.type.incompatible)
 				@IndexOrHigh int indexOrHigh = v + i;
 	}
 	
 	void add1() {
 		// Show result is of type IndexOrHigh
 		@IndexOrHigh("arr") int indexOrHigh = 1 + i;
-		//:: error (assignment.type.incompatible)
-		IndexFor("arr") int indexFor = 1 + i;
+		//:: error: (assignment.type.incompatible)
+		@IndexFor("arr") int indexFor = 1 + i;
 	}
 	
 	void add0() {
@@ -53,57 +53,57 @@ class TransferAddIndexFor {
 	void addLTLength(@LTLength("arr") int v) {
 		// Show result is of type Unknown
 				@Unknown int nn1 = v + i;
-				//:: error (assignment.type.incompatible)
+				//:: error: (assignment.type.incompatible)
 				@NonNegative int nn = v + i;
-				//:: error (assignment.type.incompatible)
+				//:: error: (assignment.type.incompatible)
 				@LTLength("arr") int lTLength = v + i;
 	}
 	
 	void addNonNegative(@NonNegative int v) {
 		// Show result is of type NonNegative
 				@NonNegative int nn1 = v + i;
-				//:: error (assignment.type.incompatible)
+				//:: error: (assignment.type.incompatible)
 				@IndexOrHigh int indexOrHigh = v + i;
 	}
 
 	void addUnknown(@Unknown int v) {
 		// Show result is of type Unknown
 				@Unknown int nn1 = v + i;
-				//:: error (assignment.type.incompatible)
+				//:: error: (assignment.type.incompatible)
 				@NonNegative int nn = v + i;
-				//:: error (assignment.type.incompatible)
+				//:: error: (assignment.type.incompatible)
 				@LTLength("arr") int lTLength = v + i;
 	}
 
 	void addIndexForB(@IndexFor("arrB") int v) {
 		// Show result is of type NonNegative
 				@NonNegative int nn1 = v + i;
-				//:: error (assignment.type.incompatible)
+				//:: error: (assignment.type.incompatible)
 				@IndexOrHigh int indexOrHigh = v + i;
 	}
 	
 	void addIndexOrLowB(@IndexOrLow("arrB") int v) {
 		// Show result is of type Unknown
 				@Unknown int nn1 = v + i;
-				//:: error (assignment.type.incompatible)
+				//:: error: (assignment.type.incompatible)
 				@NonNegative int nn = v + i;
-				//:: error (assignment.type.incompatible)
+				//:: error: (assignment.type.incompatible)
 				@LTLength("arr") int lTLength = v + i;
 	}
 
 	void addIndexOrHighB(@IndexOrHigh("arrB") int v) {
 		// Show result is of type NonNegative
 				@NonNegative int nn1 = v + i;
-				//:: error (assignment.type.incompatible)
+				//:: error: (assignment.type.incompatible)
 				@IndexOrHigh int indexOrHigh = v + i;
 	}
 
 	void addLTLengthB(@LTLength("arrB") int v) {
 		// Show result is of type Unknown
 				@Unknown int nn1 = v + i;
-				//:: error (assignment.type.incompatible)
+				//:: error: (assignment.type.incompatible)
 				@NonNegative int nn = v + i;
-				//:: error (assignment.type.incompatible)
+				//:: error: (assignment.type.incompatible)
 				@LTLength("arr") int lTLength = v + i;
 	}
 }
