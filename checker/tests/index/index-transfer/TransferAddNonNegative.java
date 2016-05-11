@@ -15,90 +15,64 @@ class TransferAddNonNegative {
 	@NonNegative int i = 2;
 	
 	void addIndexFor(@IndexFor("arr") int v) {
-		@NonNegative int nn1 = 10;
-		@NonNegative int nn2 = 10;
-		
-		int result = v + i;
-		
 		// Show result is of type NonNegative
-		nn1 = result;
-		result = nn2;
+		@NonNegative int nn1 = v + i;
+		//:: error (assignment.type.incompatible)
+		@IndexOrHigh int indexOrHigh = v + i;
 	}
 
 	void addIndexOrLow(@IndexOrLow("arr") int v) {
-		@Unknown int unknown1;
-		@Unknown int unknown2 = -10;
-		
-		int result = v + i;
-		
 		// Show result is of type Unknown
-		unknown1 = result;
-		result = unknown2;
+				@Unknown int nn1 = v + i;
+				//:: error (assignment.type.incompatible)
+				@NonNegative int nn = v + i;
+				//:: error (assignment.type.incompatible)
+				@LTLength("arr") int lTLength = v + i;
 	}
 	
 	void addIndexOrHigh(@IndexOrHigh("arr") int v) {
-		@NonNegative int nn1 = 10;
-		@NonNegative int nn2 = 10;
-		
-		int result = v + i;
-		
 		// Show result is of type NonNegative
-		nn1 = result;
-		result = nn2;
+		@NonNegative int nn1 = v + i;
+		//:: error (assignment.type.incompatible)
+		@IndexOrHigh int indexOrHigh = v + i;
 	}
 	
 	void add1() {
-		@NonNegative int nn1;
-		@NonNegative int nn2 = 10;
-		
-		int result = i + 1;
-		
-		// Show result is of type IndexOrHigh
-		nn1 = result;
-		result = nn2;
+		// Show result is of type NonNegative
+		@NonNegative int nn1 = 1 + i;
+		//:: error (assignment.type.incompatible)
+		@IndexOrHigh int indexOrHigh = 1 + i;
 	}
 	
 	void add0() {
-		@NonNegative int nn1;
-		@NonNegative int nn2 = 10;
-
-		int result = i + 0;
-		
-		// Show result is of type IndexOrHigh
-		nn1 = result;
-		result = nn2;
+		// Show result is of type NonNegative
+		@NonNegative int nn1 = 0 + i;
+		//:: error (assignment.type.incompatible)
+		@IndexOrHigh int indexOrHigh = 0 + i;
 	}
 	
 	void addLTLength(@LTLength("arr") int v) {
-		@Unknown int unknown1;
-		@Unknown int unknown2 = -10;
-		
-		int result = v + i;
-		
 		// Show result is of type Unknown
-		unknown1 = result;
-		result = unknown2;
+				@Unknown int nn1 = v + i;
+				//:: error (assignment.type.incompatible)
+				@NonNegative int nn = v + i;
+				//:: error (assignment.type.incompatible)
+				@LTLength("arr") int lTLength = v + i;
 	}
 	
 	void addNonNegative(@NonNegative int v) {
-		@NonNegative int nn1 = 10;
-		@NonNegative int nn2 = 10;
-		
-		int result = v + i;
-		
 		// Show result is of type NonNegative
-		nn1 = result;
-		result = nn2;
+		@NonNegative int nn1 = v + i;
+		//:: error (assignment.type.incompatible)
+		@IndexOrHigh int indexOrHigh = v + i;
 	}
 
 	void addUnknown(@Unknown int v) {
-		@Unknown int unknown1;
-		@Unknown int unknown2 = -10;
-		
-		int result = v + i;
-		
 		// Show result is of type Unknown
-		unknown1 = result;
-		result = unknown2;
+				@Unknown int nn1 = v + i;
+				//:: error (assignment.type.incompatible)
+				@NonNegative int nn = v + i;
+				//:: error (assignment.type.incompatible)
+				@LTLength("arr") int lTLength = v + i;
 	}
 }

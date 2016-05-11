@@ -60,7 +60,7 @@ class TransferAdd1 {
 		@NonNegative int nn1 = 1 + v;
 		//:: error (assignment.type.incompatible)
 		@IndexOrHigh int indexOrHigh = 1 + v;
-	}
+	}exOrHigh
 
 	void addUnknown(@Unknown int v) {
 		// Show result is of type Unknown
