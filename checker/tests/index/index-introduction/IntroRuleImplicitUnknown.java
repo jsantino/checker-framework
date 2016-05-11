@@ -22,11 +22,23 @@ class IntroRuleImplicitIndexOrHigh {
 		u1 = v3;
 		u1 = v4;
 		
-		// Prove Unknown is subtype of type of v1,v2,v3
-		v1 = u2;
-		v2 = u2;
-		v3 = u2;
-		v4 = u2;
+		// Prove v is super both LTLength and NonNeg
+		//:: error:(assignment.type.incompatible)
+		@LTLength("") int lt = v1;
+		//:: error:(assignment.type.incompatible)
+		lt = v2;
+		//:: error:(assignment.type.incompatible)
+		lt = v3;
+		//:: error:(assignment.type.incompatible)
+		lt = v4;
+		//:: error:(assignment.type.incompatible)
+		@NonNegative int nn = v1;
+		//:: error:(assignment.type.incompatible)
+		nn = v2;
+		//:: error:(assignment.type.incompatible)
+		nn = v3;
+		//:: error:(assignment.type.incompatible)
+		nn = v4;
 		
 	}
 }

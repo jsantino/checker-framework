@@ -19,51 +19,51 @@ class TransferAdd0 {
 	void addIndexOrLow(@IndexOrLow("arr") int v) {
 		// Show result is of type IndexOrHigh
 		@IndexOrLow("arr") int indexOrLow = 0 + v;
-        //:: error (assignment.type.incompatible)
-        IndexFor("arr") int indexFor = 0 + v;
+        //:: error: (assignment.type.incompatible)
+        @IndexFor("arr") int indexFor = 0 + v;
 	}
 	
 	void addIndexOrHigh(@IndexOrHigh("arr") int v, @IndexOrHigh("arr") int indexOrHigh1, @IndexOrHigh("arr") int indexOrHigh2) {
 		// Show result is of type IndexOrHigh
 		@IndexOrHigh("arr") int indexOrHigh = 0 + v;
-		//:: error (assignment.type.incompatible)
-		IndexFor("arr") int indexFor = 0 + v;
+		//:: error: (assignment.type.incompatible)
+		@IndexFor("arr") int indexFor = 0 + v;
 	}
 	
 	void add1() {
 		// Show result is of type NonNegative
 		@NonNegative int nn1 = 0 + 1;
-		//:: error (assignment.type.incompatible)
+		//:: error: (assignment.type.incompatible)
 		@IndexOrHigh int indexOrHigh = 0 + 1;
 	}
 	
 	void add0() {
 		// Show result is of type IndexOrHigh
 		@IndexOrHigh("") int indexOrHigh = 0 + 0;
-		//:: error (assignment.type.incompatible)
+		//:: error: (assignment.type.incompatible)
 		@IndexFor("") int indexFor = 0 + 0;
 	}
 	
 	void addLTLength(@LTLength("arr") int v) {
 		// Show result is of type LTLength
-		@LTLength("arr") lTLength1 = 0 + v;
-		//:: error (assignment.type.incompatible)
-		@IndexOrLow("arr") indexOrLow = 0 + v;
+		@LTLength("arr") int lTLength1 = 0 + v;
+		//:: error: (assignment.type.incompatible)
+		@IndexOrLow("arr") int indexOrLow = 0 + v;
 	}
 	
 	void addNonNegative(@NonNegative int v) {
 		// Show result is of type NonNegative
 		@NonNegative int nn1 = 0 + v;
-		//:: error (assignment.type.incompatible)
+		//:: error: (assignment.type.incompatible)
 		@IndexOrHigh int indexOrHigh = 0 + v;
 	}
 
 	void addUnknown(@Unknown int v) {
 		// Show result is of type Unknown
 		@Unknown int nn1 = v + 0;
-		//:: error (assignment.type.incompatible)
+		//:: error: (assignment.type.incompatible)
 		@NonNegative int nn = 0 + v;
-		//:: error (assignment.type.incompatible)
+		//:: error: (assignment.type.incompatible)
 		@LTLength("arr") int lTLength = 0 + v;
 	}
 }

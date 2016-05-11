@@ -23,9 +23,11 @@ class IntroRuleImplicitIndexOrHigh {
 		//indexOrHigh1 = v1; //vi is not intro'd with arr
 		indexOrHigh1 = v2;
 		
-		// Prove NonNegative is subtype of type of v1,v2
-		v1 = indexOrHigh1;
-		v2 = indexOrHigh2;
+		// prove that v isnt a subtype of indexorHigh
+		//:: error:(assignment.type.incompatible)
+		@IndexFor("") int l = v1;
+		//:: error:(assignment.type.incompatible)
+		@IndexFor("arr") int r = v2;
 		
 	}
 }
