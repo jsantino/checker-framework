@@ -15,14 +15,14 @@ class TransferAdd1 {
 		// Show result is of type IndexOrHigh
 		@IndexOrHigh("arr") int result = 1 + v;
         //:: error (assignment.type.incompatible)
-        IndexFor("arr") int f = result;
+        IndexFor("arr") int indexFor = 1 + v;
 	}
 
 	void addIndexOrLow(@IndexOrLow("arr") int v) {
 		// Show result is of type IndexOrHigh
 		@IndexOrHigh("arr") int result = 1 + v;
         //:: error (assignment.type.incompatible)
-        IndexFor("arr") int f = result;
+        IndexFor("arr") int indexFor = 1 + v;
 	}
 	
 	void addIndexOrHigh(@IndexOrHigh("arr") int v) {
